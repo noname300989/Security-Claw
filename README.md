@@ -71,33 +71,81 @@ openclaw onboard --install-daemon
 
 The wizard installs the Gateway daemon (launchd/systemd user service) so it stays running.
 
-## Quick start (TL;DR)
+## 🚀 Setup & Usage Guide
 
-Runtime: **Node ≥22**.
+Follow these detailed steps to set up the OpenClaw Offensive OS and activate the Red Team Agent on your local machine.
 
-Full beginner guide (auth, pairing, channels): [Getting started](https://docs.openclaw.ai/start/getting-started)
+### 1. Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js** (>= 22.12.0)
+- **pnpm** (>= 9.0)
+- **Python 3** (>= 3.10)
+- **Homebrew** (macOS/Linux) or **Git Bash** (Windows)
+
+### 2. Automatic Setup
+
+Run the included setup script to automatically verify Node.js, install all offensive tools (Nuclei, Nmap, Impacket, etc.) via Homebrew/pip, and generate your agent configuration file.
 
 ```bash
-# Make executable
+# Make the setup script executable
 chmod +x setup-offensive-os.sh
 
-# Run the setup
+# Run the setup script
 ./setup-offensive-os.sh
 ```
 
-### Activate the Red Team Agent
+### 3. Configure API Keys
 
-After configuring your `.env` file with LLM API keys (e.g., Anthropic, OpenAI) and setting up your `~/.openclaw/openclaw.json`, activate the Red Team agent:
+Copy the example environment file and add your preferred LLM provider API keys (Anthropic Claude 3.5 Sonnet / Opus is highly recommended).
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and insert your keys:
+
+```env
+ANTHROPIC_API_KEY=your_key_here
+# OR
+OPENAI_API_KEY=your_key_here
+```
+
+### 4. Start the OpenClaw Gateway (Backend)
+
+To manage the agent and communicate with it through various channels (or the local UI), you need to start the OpenClaw Gateway:
+
+```bash
+# Install dependencies and build if you haven't yet
+pnpm install
+pnpm build
+
+# Start the gateway
+pnpm openclaw start
+```
+
+_Alternatively, for development and running the local Control UI, run `pnpm dev` in a separate terminal._
+
+### 5. Activate the Red Team Agent
+
+In a new terminal window, invoke the Red Team Agent. It will load the offensive skills (Phase 1-5) configured in `~/.openclaw/openclaw.json`.
 
 ```bash
 pnpm openclaw agent --activation red-team
 ```
 
-Ask it something like:
+### 6. Start Hacking (Example Prompts)
 
-> _"Discover the attack surface for target.com and run full web vulnerability assessment"_
+Once the agent is active, you can send it prompts via the CLI, the local web dashboard, or connected chat apps (Discord, Telegram, etc.):
 
-See the [Full Setup Guide](setup.md) for manual phase-by-phase installation and troubleshooting.
+- **Web Phase:** _"Discover the attack surface for example.com and run a full web vulnerability assessment."_
+- **Cloud Phase:** _"Scan AWS account for IAM privilege escalation paths using this key."_
+- **AD Phase:** _"Perform Kerberoasting against corp.local using credentials user:pass@dc.corp.local."_
+- **Network Phase:** _"Test SMB service at 192.168.1.10 for EternalBlue and credential attacks."_
+- **Threat Intel:** _"Get me today's threat intelligence briefing on latest critical CVEs."_
+
+> 📘 **Deep Dive:** See the [Full Setup Guide](setup.md) for manual phase-by-phase tool installation, specific OWASP mappings, and troubleshooting.
 
 ---
 
