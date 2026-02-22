@@ -39,6 +39,20 @@ New install? Start here: [Getting started](https://docs.openclaw.ai/start/gettin
 
 Model note: while any model is supported, I strongly recommend **Anthropic Pro/Max (100/200) + Opus 4.6** for long‑context strength and better prompt‑injection resistance. See [Onboarding](https://docs.openclaw.ai/start/onboarding).
 
+## 🔥 Offensive Capabilities (The 5 Phases)
+
+Security Claw employs a sophisticated agent-tool loop to execute complex offensive security workflows safely.
+
+- **Phase 1: Web & API Offensive** (Nuclei, SQLMap, ffuf, jwt_tool)
+- **Phase 2: Cloud Offensive** (ScoutSuite, Pacu, TruffleHog, AWS CLI)
+- **Phase 3: Active Directory** (Impacket, BloodHound, CME, kerbrute)
+- **Phase 4: Network** (nmap, masscan, Bettercap, hydra)
+- **Phase 5: Attack Graph & Reporting** (ATT&CK, CVSS v3.1, SARIF, automated prioritized roadmaps)
+
+### 🕵️ Threat Intelligence Scraper
+
+Includes a live web scraper (`skills/threat-intel/scraper.py`) that fetches data from NVD API, CISA KEV, Exploit-DB, and more. Ask the Red Team Agent for a threat intelligence briefing!
+
 ## Models (selection + auth)
 
 - Models config + CLI: [Models](https://docs.openclaw.ai/concepts/models)
@@ -80,7 +94,8 @@ pnpm openclaw agent --activation red-team
 ```
 
 Ask it something like:
-> *"Discover the attack surface for target.com and run full web vulnerability assessment"*
+
+> _"Discover the attack surface for target.com and run full web vulnerability assessment"_
 
 See the [Full Setup Guide](setup.md) for manual phase-by-phase installation and troubleshooting.
 
@@ -99,6 +114,7 @@ Security Claw is built on top of the OpenClaw framework, inheriting all of its m
 ### Security Model (Important)
 
 OpenClaw tools run locally on the host by default. For offensive security tasks, or when exposing the bot to a channel group, you should enable **Sandboxing**:
+
 - Set `agents.defaults.sandbox.mode: "non-main"` to isolate group/channel sessions inside Docker containers.
 - Utilize the explicit **Gateway Approval** system for privileged commands.
 
@@ -109,6 +125,7 @@ Details: [Security guide](https://docs.openclaw.ai/gateway/security) · [Docker 
 ## 📚 General Documentation & Internals
 
 If you are looking for configuration manuals for the core framework (channels, models, UI):
+
 - [Docs Index](https://docs.openclaw.ai)
 - [Architecture Overview](https://docs.openclaw.ai/concepts/architecture)
 - [Full Configuration Reference](https://docs.openclaw.ai/gateway/configuration)
