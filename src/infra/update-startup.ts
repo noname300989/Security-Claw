@@ -3,6 +3,7 @@ import path from "node:path";
 import { formatCliCommand } from "../cli/command-format.js";
 import type { loadConfig } from "../config/config.js";
 import { resolveStateDir } from "../config/paths.js";
+import type { UpdateAvailable } from "../shared/update-types.js";
 import { VERSION } from "../version.js";
 import { resolveOpenClawPackageRoot } from "./openclaw-root.js";
 import { normalizeUpdateChannel, DEFAULT_PACKAGE_CHANNEL } from "./update-channels.js";
@@ -14,12 +15,6 @@ type UpdateCheckState = {
   lastNotifiedTag?: string;
   lastAvailableVersion?: string;
   lastAvailableTag?: string;
-};
-
-export type UpdateAvailable = {
-  currentVersion: string;
-  latestVersion: string;
-  channel: string;
 };
 
 let updateAvailableCache: UpdateAvailable | null = null;
