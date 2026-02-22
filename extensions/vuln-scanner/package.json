@@ -1,0 +1,18 @@
+{
+  "name": "@openclaw/extension-vuln-scanner",
+  "version": "1.0.0",
+  "description": "OpenClaw native vulnerability scanner — wraps vuln_scanner.py as an invocable tool for the Red Team Agent",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "dev":   "tsc --project tsconfig.json --watch"
+  },
+  "dependencies": {
+    "@openclaw/plugin-sdk": "workspace:*",
+    "@sinclair/typebox":   "^0.32.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

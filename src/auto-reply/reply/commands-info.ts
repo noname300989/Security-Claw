@@ -1,3 +1,6 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import { listAgentIds, resolveAgentConfig, resolveAgentDir } from "../../agents/agent-scope.js";
 import { logVerbose } from "../../globals.js";
 import { listSkillCommandsForAgents } from "../skill-commands.js";
 import {
@@ -23,9 +26,28 @@ export const handleHelpCommand: CommandHandler = async (params, allowTextCommand
     );
     return { shouldContinue: false };
   }
+  let text = buildHelpMessage(params.cfg);
+  
+  if (params.cfg) {
+    text += "\n\n--- Agent Prompts ---";
+    const agentIds = listAgentIds(params.cfg);
+    for (const agentId of agentIds) {
+      const config = resolveAgentConfig(params.cfg, agentId);
+      const agentName = config?.name || agentId;
+      const agentDir = resolveAgentDir(params.cfg, agentId);
+      try {
+        const soulPath = path.join(agentDir, "SOUL.md");
+        const soulContent = await fs.readFile(soulPath, "utf-8");
+        text += `\n\n[Agent: ${agentName}]\n${soulContent.trim()}`;
+      } catch {
+        // file doesn't exist, ignore
+      }
+    }
+  }
+
   return {
     shouldContinue: false,
-    reply: { text: buildHelpMessage(params.cfg) },
+    reply: { text },
   };
 };
 

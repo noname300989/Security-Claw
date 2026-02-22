@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elite Security Interview Prep</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="logo-area">
+          <div class="logo-icon">😈</div>
+          <div>
+            <h1>OpenClaw Security Prep</h1>
+            <p class="subtitle">Daily Elite Interview Simulation</p>
+          </div>
+        </div>
+        <div class="stats-area">
+          <div class="stat-badge">
+            <span class="stat-value" id="totalQuestions">0</span>
+            <span class="stat-label">Questions Today</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+      <section class="filters-section">
+        <div class="category-tabs" id="categoryTabs">
+          <!-- Dynamically populated categories -->
+          <button class="tab-btn active" data-category="all">All Topics</button>
+        </div>
+      </section>
+
+      <section class="questions-grid" id="questionsGrid">
+        <!-- Dynamically populated questions -->
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

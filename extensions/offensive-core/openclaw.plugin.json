@@ -1,0 +1,12 @@
+{
+  "id": "offensive-core",
+  "name": "Offensive Core",
+  "description": "Core engine for offensive operations",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

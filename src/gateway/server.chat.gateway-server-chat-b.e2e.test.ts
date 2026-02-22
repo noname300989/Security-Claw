@@ -153,7 +153,7 @@ describe("gateway server chat", () => {
       try {
         spy.mockClear();
         let capturedOpts: GetReplyOptions | undefined;
-        spy.mockImplementationOnce(async (_ctx: unknown, opts?: GetReplyOptions) => {
+        spy.mockImplementationOnce(async (_ctx: any, opts?: GetReplyOptions) => {
           capturedOpts = opts;
           return undefined;
         });
@@ -343,8 +343,8 @@ describe("gateway server chat", () => {
       await createSessionDir();
       await writeMainSessionStore();
 
-      spy.mockClear();
-      spy.mockImplementationOnce(async (_ctx, opts) => {
+      spy.mockReset();
+      spy.mockImplementationOnce(async (_ctx: any, opts: any) => {
         opts?.onAgentRunStart?.(opts.runId ?? "idem-abort-1");
         const signal = opts?.abortSignal;
         await new Promise<void>((resolve) => {

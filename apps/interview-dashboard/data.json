@@ -1,0 +1,15 @@
+# Daily Interview Preparation
+{
+  "questions": [
+    {
+      "category": "OWASP Top 10",
+      "question": "How does Broken Access Control manifest in modern Single Page Applications (SPAs) compared to traditional server-rendered applications?",
+      "answer": "In traditional server-rendered applications, access control checks are strictly enforced on the server before rendering the page, meaning unauthorized UI elements and data are never sent to the client. In contrast, SPAs often rely on client-side routing and rendering. If access control is only implemented by hiding UI elements (like admin buttons) via JavaScript rather than enforcing API-level authorization on the backend, an attacker can simply modify the client state or directly query the backend REST/GraphQL APIs. Therefore, SPAs require strict 'zero-trust' API enforcement, where every single data request and mutation is independently validated for permissions on the server, regardless of the client-side UI state."
+    },
+    {
+      "category": "Cloud Security",
+      "question": "Explain the concept of an SSRF (Server-Side Request Forgery) attack specifically targeting the AWS IMDSv1. How does IMDSv2 mitigate this?",
+      "answer": "An SSRF attack occurs when a vulnerable application can be tricked into making HTTP requests to arbitrary domains on an attacker's behalf. In an AWS environment using EC2, attackers commonly target the Instance Metadata Service (IMDS) at `169.254.169.254` to steal temporary IAM credentials attached to the instance role. With IMDSv1, a simple `GET /latest/meta-data/` request is sufficient to retrieve these credentials. IMDSv2 mitigates this by enforcing a session-oriented approach: it requires a `PUT` request containing a specific header (`X-aws-ec2-metadata-token-ttl-seconds`) to retrieve a temporal token, which must then be included as another header (`X-aws-ec2-metadata-token`) in subsequent `GET` requests. Since traditional SSRF vulnerabilities rarely allow attackers to send a generic `PUT` request followed by a custom-header `GET` request, IMDSv2 effectively neutralizes most cloud-based SSRF credential theft."
+    }
+  ]
+}

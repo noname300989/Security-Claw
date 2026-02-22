@@ -1,0 +1,13 @@
+{
+  "name": "@openclaw/extension-offensive-core",
+  "version": "1.0.0",
+  "description": "Core offensive security engine for OpenClaw",
+  "type": "module",
+  "main": "dist/index.js",
+  "dependencies": {
+    "@openclaw/plugin-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
