@@ -1,0 +1,12 @@
+{
+  "id": "htb-pwn",
+  "name": "HackTheBox Automation",
+  "description": "Full HTB pipeline: browse active machines, enumerate, exploit, generate pentest report, broadcast to Discord/Telegram/WhatsApp",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

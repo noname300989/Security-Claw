@@ -1,12 +1,52 @@
 {
-  // OpenClaw Offensive OS — Full Agent Configuration
-  // Copy this to ~/.openclaw/openclaw.json to activate the Red Team Agent.
-  //
-  // IMPORTANT: The Red Team Agent is fully autonomous — it auto-invokes all tools,
-  // runs parallel workflows, and dynamically coordinates specialist sub-agents.
-  // You never need to run any commands manually.
-  //
+  // OpenClaw Offensive OS — Active Configuration
+  // Auto-generated from openclaw.json.template with security hardening applied.
+  // See: https://docs.openclaw.ai/gateway/configuration
+
+  // ─────────────────────────────────────────────────────────
+  // SECURITY HARDENING
+  // ─────────────────────────────────────────────────────────
+
+  "gateway": {
+    "controlUi": {
+      "allowInsecureAuth": false // NEVER enable — keeps UI secured
+    }
+  },
+
+  // Disable mDNS peer discovery — no local network broadcasting
+  "discovery": {
+    "mdns": {
+      "mode": "off"
+    }
+  },
+
+  // Require explicit pairing codes for direct messages
+  "dmPolicy": "pairing",
+
+  // Only allow explicitly allowlisted groups
+  "groupPolicy": "allowlist",
+
+  "logging": {
+    // Redact sensitive data from tool call logs
+    "redactSensitive": "tools"
+  },
+
+  // ─────────────────────────────────────────────────────────
+  // SANDBOX — non-main sessions, no workspace access
+  // https://docs.openclaw.ai/gateway/configuration#minimal-enable-example
+  // ─────────────────────────────────────────────────────────
   "agents": {
+    "defaults": {
+      "sandbox": {
+        "mode": "non-main", // Sandbox all non-primary agent calls
+        "scope": "session", // Sandbox lifetime = current session only
+        "workspaceAccess": "none" // No direct workspace filesystem access
+      }
+    },
+
+    // ─────────────────────────────────────────────────────
+    // RED TEAM AGENT
+    // ─────────────────────────────────────────────────────
     "list": [
       {
         "id": "red-team",
