@@ -241,6 +241,16 @@ importers:
         specifier: ^4.0.18
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2)
 
+  extensions/antigravity-vibecoding:
+    dependencies:
+      '@openclaw/plugin-sdk':
+        specifier: workspace:*
+        version: link:../../src/plugin-sdk
+    devDependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+
   extensions/bluebubbles:
     devDependencies:
       openclaw:
@@ -336,6 +346,19 @@ importers:
       openclaw:
         specifier: workspace:*
         version: link:../..
+
+  extensions/htb-pwn:
+    dependencies:
+      '@openclaw/plugin-sdk':
+        specifier: workspace:*
+        version: link:../../src/plugin-sdk
+      '@sinclair/typebox':
+        specifier: 0.34.48
+        version: 0.34.48
+    devDependencies:
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
 
   extensions/imessage:
     devDependencies:
@@ -546,6 +569,19 @@ importers:
       openclaw:
         specifier: workspace:*
         version: link:../..
+
+  extensions/xbow-integration:
+    dependencies:
+      '@openclaw/plugin-sdk':
+        specifier: workspace:*
+        version: link:../../src/plugin-sdk
+      '@sinclair/typebox':
+        specifier: 0.34.48
+        version: 0.34.48
+    devDependencies:
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
 
   extensions/zalo:
     dependencies:
