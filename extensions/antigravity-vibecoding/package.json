@@ -1,0 +1,16 @@
+{
+  "name": "@openclaw/plugin-antigravity-vibecoding",
+  "version": "1.0.0",
+  "description": "Native OpenClaw skill to spawn Antigravity autonomous vibecoding sessions",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@openclaw/plugin-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

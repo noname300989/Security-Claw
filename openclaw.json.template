@@ -122,8 +122,20 @@
           "code-analysis",
           "knowledge-mgmt",
           "threat-intel",
-          "xbow-integration"
+          "xbow-integration",
+          "discord",
+          "telegram",
+          "antigravity-vibecoding"
         ],
+        "tools": {
+          "integrations": [
+            "GitHub (via mcp-github)",
+            "HackTheBox (via htb-pwn)",
+            "XBOW Autonomous Swarm (via xbow-integration)",
+            "Antigravity Vibecoding (via antigravity-vibecoding)",
+            "Discord/Telegram/Matrix (via plugins)"
+          ]
+        },
         "identity": {
           "name": "Red Team",
           "emoji": "😈"
