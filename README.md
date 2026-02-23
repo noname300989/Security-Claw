@@ -43,11 +43,17 @@ Model note: while any model is supported, I strongly recommend **Anthropic Pro/M
 
 Security Claw employs a sophisticated agent-tool loop to execute complex offensive security workflows safely.
 
-- **Phase 1: Web & API Offensive** (Nuclei, SQLMap, ffuf, jwt_tool)
+- **Phase 1: Web & API Offensive** (XBOW Autonomous Swarm, Nuclei, SQLMap, ffuf, jwt_tool)
 - **Phase 2: Cloud Offensive** (ScoutSuite, Pacu, TruffleHog, AWS CLI)
 - **Phase 3: Active Directory** (Impacket, BloodHound, CME, kerbrute)
 - **Phase 4: Network** (nmap, masscan, Bettercap, hydra)
 - **Phase 5: Attack Graph & Reporting** (ATT&CK, CVSS v3.1, SARIF, automated prioritized roadmaps)
+
+### 🤖 Advanced Integrations
+
+- **Antigravity Vibecoding:** Delegate complex coding and patching tasks to an autonomous background sub-agent.
+- **XBOW Autonomous Pentesting:** Command the XBOW agent swarm to confidently exploit and validate vulnerabilities with zero false positives.
+- **HackTheBox Auto-Pwn:** Automatically download VPN packs, spin up instances, orchestrate the kill chain, and generate markdown walkthroughs for HTB machines.
 
 ### 🕵️ Threat Intelligence Scraper
 
