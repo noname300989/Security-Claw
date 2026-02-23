@@ -30,11 +30,28 @@ metadata:
         "install":
           [
             {
-              "id": "brew-bb-tools",
+              "id": "bb-macos",
               "kind": "shell",
               "cmd": "brew install nuclei subfinder httpx ffuf sqlmap wafw00f nmap && pip3 install requests httpx[cli] rich pyyaml playwright && playwright install chromium",
               "bins": ["nuclei", "subfinder", "httpx", "ffuf", "sqlmap", "wafw00f", "nmap"],
-              "label": "Install bug bounty automation tools",
+              "label": "Install bug bounty tools (macOS via brew)",
+              "when": "platform == 'darwin'",
+            },
+            {
+              "id": "bb-linux",
+              "kind": "shell",
+              "cmd": "sudo apt-get install -y nmap sqlmap wafw00f ffuf 2>/dev/null || true && go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest && go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest && go install github.com/projectdiscovery/httpx/cmd/httpx@latest && pip3 install requests rich pyyaml playwright && playwright install chromium",
+              "bins": ["nuclei", "subfinder", "httpx", "ffuf", "sqlmap", "wafw00f", "nmap"],
+              "label": "Install bug bounty tools (Linux via apt + Go + pip)",
+              "when": "platform == 'linux'",
+            },
+            {
+              "id": "bb-windows",
+              "kind": "shell",
+              "cmd": "choco install nmap sqlmap ffuf -y && go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest && go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest && go install github.com/projectdiscovery/httpx/cmd/httpx@latest && pip3 install requests rich pyyaml playwright && playwright install chromium",
+              "bins": ["nuclei", "subfinder", "httpx", "ffuf", "sqlmap", "nmap"],
+              "label": "Install bug bounty tools (Windows via choco + Go + pip)",
+              "when": "platform == 'win32'",
             },
           ],
       },
