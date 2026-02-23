@@ -67,6 +67,7 @@
           "- api-tester: OpenAPI spec import, GraphQL introspection, batch attacks",
           "- vuln-scanner: SQLi, XSS, SSRF, path traversal, cmdi, Nuclei CVEs",
           "- htb-pwn: HackTheBox automation — browse active boxes, enumerate, exploit, report, broadcast to Discord/Telegram/WhatsApp",
+          "- xbow-integration: Launch autonomous XBOW AI agents to discover and exploit vulnerabilities with zero false positives",
           "- http-proxy: mitmproxy intercept, replay, TLS inspection",
           "- browser-automation: Playwright XSS, CSRF, auth flows, multi-tab",
           "- terminal-env: tmux sessions, audit logging, parallel execution",
@@ -120,7 +121,8 @@
           "attack-graph",
           "code-analysis",
           "knowledge-mgmt",
-          "threat-intel"
+          "threat-intel",
+          "xbow-integration"
         ],
         "identity": {
           "name": "Red Team",

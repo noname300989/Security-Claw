@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>XBOW Autonomous Scanner</title>
+  <style>
+    :root {
+      --bg: #111111;
+      --panel: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --accent: #ff3e00; /* Orange/Red Hacker Vibe */
+      --border: #333333;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      width: 340px;
+      margin: 0;
+      padding: 16px;
+    }
+    h2 {
+      margin: 0 0 16px 0;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-group {
+      margin-bottom: 12px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      box-sizing: border-box;
+      background: #000;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .action-btn {
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .action-btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+    .action-btn:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+    .danger {
+      color: #ff4444;
+      font-size: 12px;
+      margin-top: 8px;
+      display: none;
+    }
+    .results {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+    .log-window {
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      height: 120px;
+      overflow-y: auto;
+      padding: 8px;
+      font-family: monospace;
+      font-size: 11px;
+      color: #00ff00;
+    }
+    .log-window p {
+      margin: 0 0 4px 0;
+    }
+    .finding {
+      color: #ff3e00;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🏹 XBOW AI Swarm</h2>
+  <div class="form-group">
+    <label>Target URL</label>
+    <input type="text" id="targetUrl" readonly />
+  </div>
+
+  <div class="form-group">
+    <label>XBOW API Key</label>
+    <input type="password" id="apiKey" placeholder="xbow_..." />
+  </div>
+
+  <button class="action-btn" id="launchBtn">Launch Autonomous Scan</button>
+  <div class="danger" id="errorMsg"></div>
+
+  <div class="results" id="resultsSection">
+    <label>Live Assessment Logs</label>
+    <div class="log-window" id="logs">
+      <p>> Swarm initializing...</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

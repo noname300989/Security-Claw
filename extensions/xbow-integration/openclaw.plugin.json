@@ -1,0 +1,17 @@
+{
+  "id": "openclaw.xbow-integration",
+  "name": "XBOW Autonomous Security Platform",
+  "description": "Integrates the XBOW API to launch autonomous AI swarm agents for vulnerability discovery and confirmed exploitation.",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "engines": {
+    "openclaw": "^1.0.0"
+  },
+  "permissions": {
+    "tools": ["xbow_scan"],
+    "fs": {
+      "read": ["$WORKSPACE"],
+      "write": ["$WORKSPACE"]
+    }
+  }
+}
