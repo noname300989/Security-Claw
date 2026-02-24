@@ -1,0 +1,24 @@
+name: burpsuite-integration
+description: "Zero-touch Burp Suite integration to automatically scan a target for High and Critical vulnerabilities using the Burp REST API. Enforces a strict 1-thread limit for active scanning."
+version: "1.0.0"
+
+tools:
+  - name: burp_scan
+    description: "Launch an automated zero-touch active scan via Burp Suite against a target URL. Automatically filters for High/Critical severities and limits scan threads to 1."
+    execute:
+      command: bun run index.ts
+    params:
+      type: object
+      properties:
+        targetUrl:
+          type: string
+          description: "The URL of the application to scan (e.g., http://target-app.local)"
+        burpApiUrl:
+          type: string
+          description: "The base URL of the Burp Suite REST API (default: http://127.0.0.1:1337)"
+          default: "http://127.0.0.1:1337"
+        apiKey:
+          type: string
+          description: "The API key for Burp Suite Enterprise/Pro REST API if authentication is required"
+      required:
+        - targetUrl
