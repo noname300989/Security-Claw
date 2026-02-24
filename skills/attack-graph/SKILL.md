@@ -19,8 +19,8 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install networkx matplotlib",
               "bins": [],
-              "label": "Install networkx graph library (pip)"
-            }
+              "label": "Install networkx graph library (pip)",
+            },
           ],
       },
   }
@@ -34,12 +34,15 @@ and prioritize remediation by business impact.
 ## Capabilities
 
 ### 1. Finding Correlation & Attack Path Synthesis
+
 Connect findings across Web, API, Cloud, AD, Network, and AI domains into unified attack paths.
 
 **Usage:**
+
 > Analyze all discovered findings and construct the highest-risk attack chains
 
 **Example Chain:**
+
 ```
 [Web] SSRF in /api/fetch
     → [Cloud] Metadata endpoint access → IAM credentials
@@ -53,12 +56,15 @@ Connect findings across Web, API, Cloud, AD, Network, and AI domains into unifie
 ---
 
 ### 2. MITRE ATT&CK Mapping
+
 Automatically map all findings to ATT&CK Tactics, Techniques, and Sub-techniques.
 
 **Usage:**
+
 > Map all current findings to MITRE ATT&CK and generate a Navigator layer
 
 **Output Formats:**
+
 - ATT&CK Navigator JSON layer
 - Markdown report by tactic
 - CSV for ingestion into SIEM/SOAR
@@ -66,12 +72,15 @@ Automatically map all findings to ATT&CK Tactics, Techniques, and Sub-techniques
 ---
 
 ### 3. Risk Prioritization Engine
+
 Score and prioritize findings by CVSS base score, exploitability, and business blast radius.
 
 **Usage:**
+
 > Prioritize the discovered vulnerabilities by risk to the business
 
 **Scoring Factors:**
+
 - CVSS v3.1 base score
 - Exploitability (proof-of-concept available?)
 - Blast radius (how many systems affected?)
@@ -81,12 +90,15 @@ Score and prioritize findings by CVSS base score, exploitability, and business b
 ---
 
 ### 4. Cross-Domain Attack Chain Analysis
+
 Identify attack paths that cross security domains (e.g., Web → Cloud → AD).
 
 **Usage:**
+
 > Find attack paths from external web access to complete domain compromise
 
 **Analysis Types:**
+
 - Shortest path to Domain Admin
 - Highest-impact path (by data sensitivity)
 - Most stealthy path (lowest alert score)
@@ -94,12 +106,15 @@ Identify attack paths that cross security domains (e.g., Web → Cloud → AD).
 ---
 
 ### 5. Executive Report Generation
+
 Generate structured, professional penetration test reports.
 
 **Usage:**
+
 > Generate a penetration test report for the assessment of target.com
 
 **Report Sections:**
+
 1. Executive Summary
 2. Scope & Methodology
 3. Risk Summary (by severity)
@@ -113,12 +128,15 @@ Generate structured, professional penetration test reports.
 ---
 
 ### 6. Remediation Roadmap Generation
+
 Produce actionable, prioritized remediation recommendations with implementation guidance.
 
 **Usage:**
+
 > Generate a prioritized remediation roadmap for all discovered findings
 
 **Grouping Strategy:**
+
 - Quick wins (< 1 day, high risk reduction)
 - Short-term (1 week, architectural fixes)
 - Long-term (strategic security improvements)
@@ -126,12 +144,15 @@ Produce actionable, prioritized remediation recommendations with implementation 
 ---
 
 ### 7. CI/CD Security Gate Integration
+
 Export findings in SARIF format for GitHub Advanced Security / GitLab Security Dashboard integration.
 
 **Usage:**
+
 > Export findings in SARIF format for CI/CD pipeline integration
 
 **Supported Outputs:**
+
 - SARIF v2.1.0 (GitHub, Azure DevOps)
 - JUnit XML (Jenkins, CircleCI)
 - SonarQube generic issue format

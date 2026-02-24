@@ -19,8 +19,8 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install mitmproxy",
               "bins": ["mitmproxy", "mitmdump", "mitmweb"],
-              "label": "Install mitmproxy (pip)"
-            }
+              "label": "Install mitmproxy (pip)",
+            },
           ],
       },
   }
@@ -62,20 +62,25 @@ curl --proxy http://127.0.0.1:8080 http://mitm.it/cert/pem -o mitmproxy-ca.pem
 ## Capabilities
 
 ### 1. Request Interception & Modification
+
 Intercept any request and modify headers, body, method, or URL before forwarding.
 
 **mitmproxy keybindings:** `i` → intercept filter | `e` → edit | `a` → allow/forward | `r` → resume
 
 **Usage:**
+
 > Start HTTP proxy and intercept all requests to api.target.com
 
 ### 2. Response Manipulation
+
 Modify server responses in real-time — inject scripts, change status codes, alter JSON.
 
 **Usage:**
+
 > Intercept responses from target.com and inject XSS test payload into every HTML response
 
 ### 3. Replay & Fuzzing
+
 Replay captured requests with modified parameters for manual fuzzing and testing.
 
 **mitmproxy:** Select request → `v` → edit → `r` replay
@@ -86,6 +91,7 @@ mitmdump -s skills/http-proxy/replay_fuzzer.py -r traffic.mitm
 ```
 
 ### 4. TLS / HTTPS Inspection
+
 Transparently decrypt and inspect HTTPS traffic including HTTP/2 and QUIC.
 
 ```bash
@@ -97,6 +103,7 @@ mitmproxy --ssl-insecure
 ```
 
 ### 5. WebSocket Capture
+
 Capture and analyze WebSocket frames in real-time.
 
 ```bash
@@ -104,6 +111,7 @@ mitmweb  # WebSocket frames visible in web UI
 ```
 
 ### 6. Export to HAR / Burp
+
 Export captured traffic for analysis in other tools.
 
 ```bash
@@ -117,6 +125,7 @@ mitmproxy -r traffic.mitm
 ### 7. Automated Manipulation Scripts
 
 **Inject custom header into every request:**
+
 ```python
 # skills/http-proxy/inject_header.py
 def request(flow):
@@ -124,6 +133,7 @@ def request(flow):
 ```
 
 **Log all POST bodies:**
+
 ```python
 def request(flow):
     if flow.request.method == "POST":
@@ -132,6 +142,7 @@ def request(flow):
 ```
 
 **Block tracking and ads:**
+
 ```python
 BLOCK_HOSTS = ["ads.tracker.com", "telemetry.vendor.com"]
 def request(flow):
@@ -140,6 +151,7 @@ def request(flow):
 ```
 
 **Inject XSS test into all responses:**
+
 ```python
 def response(flow):
     if "text/html" in flow.response.headers.get("content-type", ""):

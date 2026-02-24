@@ -27,7 +27,7 @@ export const handleHelpCommand: CommandHandler = async (params, allowTextCommand
     return { shouldContinue: false };
   }
   let text = buildHelpMessage(params.cfg);
-  
+
   if (params.cfg) {
     text += "\n\n--- Agent Prompts ---";
     const agentIds = listAgentIds(params.cfg);

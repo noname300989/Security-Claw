@@ -3,6 +3,7 @@
   "name": "XBOW Autonomous Security Platform",
   "description": "Integrates the XBOW API to launch autonomous AI swarm agents for vulnerability discovery and confirmed exploitation.",
   "version": "1.0.0",
+  "configSchema": {},
   "main": "dist/index.js",
   "engines": {
     "openclaw": "^1.0.0"

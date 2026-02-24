@@ -20,8 +20,8 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install requests httpx gql[requests] pyyaml jsonschema rich",
               "bins": [],
-              "label": "Install API tester dependencies (pip)"
-            }
+              "label": "Install API tester dependencies (pip)",
+            },
           ],
       },
   }
@@ -36,12 +36,15 @@ A comprehensive skill for security assessment of both REST and GraphQL APIs.
 ## REST API Testing
 
 ### 1. Endpoint Discovery from OpenAPI/Swagger Spec
+
 Automatically enumerate all REST endpoints from an OpenAPI 3.x or Swagger 2.x specification.
 
 **Usage:**
+
 > Import the OpenAPI spec from https://api.target.com/swagger.json and enumerate all endpoints
 
 **Techniques:**
+
 - Parse OpenAPI/Swagger JSON or YAML spec
 - Extract all routes, methods, parameters, and authentication schemes
 - Identify unauthenticated vs authenticated endpoints
@@ -52,12 +55,15 @@ Automatically enumerate all REST endpoints from an OpenAPI 3.x or Swagger 2.x sp
 ---
 
 ### 2. Authentication & Authorization Testing (BOLA / BFLA)
+
 Test every endpoint for object-level and function-level authorization failures.
 
 **Usage:**
+
 > Test all /api/v1/users/{id} endpoints for BOLA (IDOR) using user A's token to access user B's data
 
 **Tests:**
+
 - **BOLA (API1:2023):** Swap resource IDs between accounts — user A accesses user B's objects
 - **BFLA (API5:2023):** Use a low-privilege token on admin endpoints
 - **Horizontal escalation:** User → different user same role
@@ -68,9 +74,11 @@ Test every endpoint for object-level and function-level authorization failures.
 ---
 
 ### 3. Broken Authentication Testing
+
 Probe authentication mechanisms for weaknesses.
 
 **Tests:**
+
 - Missing authentication on endpoints that should be protected
 - Weak API key entropy / guessable tokens
 - JWT: alg:none, HS256→RS256 confusion, expired token acceptance
@@ -79,6 +87,7 @@ Probe authentication mechanisms for weaknesses.
 - Credential stuffing / brute-force (no rate limit)
 
 **Usage:**
+
 > Test REST API authentication at https://api.target.com for JWT and OAuth weaknesses
 
 **OWASP Reference:** API2:2023 Broken Authentication
@@ -86,15 +95,18 @@ Probe authentication mechanisms for weaknesses.
 ---
 
 ### 4. Excessive Data Exposure
+
 Identify responses that return more fields than the client uses.
 
 **Tests:**
+
 - Compare fields returned vs fields rendered in client
 - Look for PII, internal IDs, password hashes in responses
 - Test `fields` / `include` filter bypass
 - Debug endpoints left active in production
 
 **Usage:**
+
 > Check if /api/v1/users endpoint leaks PII or internal fields
 
 **OWASP Reference:** API3:2023 Broken Object Property Level Authorization
@@ -102,17 +114,21 @@ Identify responses that return more fields than the client uses.
 ---
 
 ### 5. Mass Assignment Testing
+
 Test whether API endpoints accept and apply unexpected fields.
 
 **Tests:**
+
 - Send additional JSON fields (e.g., `"role": "admin"`, `"isVerified": true`)
 - Test PUT/PATCH/POST bodies for parameter pollution
 - Check if `id`, `userId`, `admin`, `credit` fields are bindable
 
 **Usage:**
+
 > Test the /api/v1/profile update endpoint for mass assignment vulnerabilities
 
 **Payload example:**
+
 ```json
 {
   "name": "Test User",
@@ -128,15 +144,18 @@ Test whether API endpoints accept and apply unexpected fields.
 ---
 
 ### 6. Rate Limiting & Resource Consumption
+
 Test for missing rate limits and resource abuse vectors.
 
 **Tests:**
+
 - Concurrent request flooding
 - Large payload injection (body size, array sizes)
 - Deep pagination abuse (`?page=999999`)
 - Regex DoS via crafted inputs
 
 **Usage:**
+
 > Test /api/v1/send-email for rate limiting bypass
 
 **OWASP Reference:** API4:2023 Unrestricted Resource Consumption
@@ -144,15 +163,18 @@ Test for missing rate limits and resource abuse vectors.
 ---
 
 ### 7. Injection Testing (SQLi, NoSQLi, Command Injection)
+
 Test REST API parameters for injection vulnerabilities.
 
 **Tests:**
+
 - SQL injection in query params, JSON body fields, path params
 - NoSQL injection (`{"$gt": ""}`, `{"$ne": null}`)
 - Command injection in file/path related endpoints
 - SSTI in template endpoints
 
 **Usage:**
+
 > Test https://api.target.com/search?q= for SQL and NoSQL injection
 
 **Tools:** `sqlmap`, custom `httpx` probes
@@ -160,9 +182,11 @@ Test REST API parameters for injection vulnerabilities.
 ---
 
 ### 8. Security Headers & Transport Layer
+
 Validate API security posture at transport and HTTP layer.
 
 **Checks:**
+
 - HTTPS enforced (no HTTP fallback)
 - `Strict-Transport-Security` header present
 - `Content-Type: application/json` enforced (not `text/html`)
@@ -176,22 +200,41 @@ Validate API security posture at transport and HTTP layer.
 ## GraphQL API Testing
 
 ### 9. Schema Introspection
+
 Enumerate the full GraphQL schema to discover all types, queries, mutations, and subscriptions.
 
 **Usage:**
+
 > Enumerate the GraphQL schema at https://api.target.com/graphql
 
 **Introspection query:**
+
 ```graphql
 {
   __schema {
-    queryType { name }
-    mutationType { name }
-    subscriptionType { name }
+    queryType {
+      name
+    }
+    mutationType {
+      name
+    }
+    subscriptionType {
+      name
+    }
     types {
       name
       kind
-      fields { name type { name kind ofType { name kind } } }
+      fields {
+        name
+        type {
+          name
+          kind
+          ofType {
+            name
+            kind
+          }
+        }
+      }
     }
   }
 }
@@ -202,21 +245,29 @@ Enumerate the full GraphQL schema to discover all types, queries, mutations, and
 ---
 
 ### 10. Introspection Bypass (When Disabled)
+
 Enumerate schema even when `__schema` introspection is disabled.
 
 **Techniques:**
+
 - `__type` query (often not blocked separately)
 - Field suggestion exploitation (typo → server corrects with valid field names)
 - `__typename` meta-field on all types
 - Clairvoyance tool for wordlist-based field discovery
 
 **Usage:**
+
 > Enumerate GraphQL schema fields despite introspection being disabled at https://api.target.com/graphql
 
 **Field suggestion example:**
+
 ```graphql
 # Misspell a field to trigger "Did you mean: secretField?"
-{ user { passsword } }
+{
+  user {
+    passsword
+  }
+}
 # Server responds: "Cannot query field 'passsword'. Did you mean 'password'?"
 ```
 
@@ -225,19 +276,36 @@ Enumerate schema even when `__schema` introspection is disabled.
 ---
 
 ### 11. GraphQL Injection (SQL, OS, SSTI)
+
 Test GraphQL arguments for injection vulnerabilities.
 
 **Usage:**
+
 > Test the GraphQL user query for SQL injection via the email argument
 
 **Payloads:**
+
 ```graphql
 # SQL injection via arguments
-{ user(email: "admin'--") { id name email } }
-{ user(id: "1 UNION SELECT username,password FROM users--") { id } }
+{
+  user(email: "admin'--") {
+    id
+    name
+    email
+  }
+}
+{
+  user(id: "1 UNION SELECT username,password FROM users--") {
+    id
+  }
+}
 
 # NoSQL injection
-{ user(filter: "{\"$gt\": \"\"}") { id } }
+{
+  user(filter: "{\"$gt\": \"\"}") {
+    id
+  }
+}
 ```
 
 **OWASP Reference:** API3:2023, A03:2021 Injection
@@ -245,17 +313,20 @@ Test GraphQL arguments for injection vulnerabilities.
 ---
 
 ### 12. Batch Query Attack (DoS / Brute-force)
+
 Abuse GraphQL query batching to bypass rate limits or amplify requests.
 
 **Usage:**
+
 > Test the GraphQL login mutation for batch query brute-force attacks
 
 **Batch login brute-force:**
+
 ```json
 [
-  {"query": "mutation { login(email: \"admin@test.com\", password: \"pass1\") { token } }"},
-  {"query": "mutation { login(email: \"admin@test.com\", password: \"pass2\") { token } }"},
-  {"query": "mutation { login(email: \"admin@test.com\", password: \"pass3\") { token } }"}
+  { "query": "mutation { login(email: \"admin@test.com\", password: \"pass1\") { token } }" },
+  { "query": "mutation { login(email: \"admin@test.com\", password: \"pass2\") { token } }" },
+  { "query": "mutation { login(email: \"admin@test.com\", password: \"pass3\") { token } }" }
 ]
 ```
 
@@ -264,19 +335,30 @@ Abuse GraphQL query batching to bypass rate limits or amplify requests.
 ---
 
 ### 13. Deep Query / Circular Query DoS
+
 Send deeply nested or circular queries to exhaust server resources.
 
 **Usage:**
+
 > Test the GraphQL endpoint for query depth and complexity limits
 
 **Deep nesting attack:**
+
 ```graphql
 {
   user {
     friends {
       friends {
         friends {
-          friends { id name friends { friends { id } } }
+          friends {
+            id
+            name
+            friends {
+              friends {
+                id
+              }
+            }
+          }
         }
       }
     }
@@ -285,6 +367,7 @@ Send deeply nested or circular queries to exhaust server resources.
 ```
 
 **Checks:**
+
 - Query depth limit enforcement
 - Query complexity scoring
 - Timeout controls
@@ -295,12 +378,15 @@ Send deeply nested or circular queries to exhaust server resources.
 ---
 
 ### 14. GraphQL Authorization (BOLA / Vertical Escalation)
+
 Test whether GraphQL resolvers enforce proper authorization per field and operation.
 
 **Usage:**
+
 > Test GraphQL resolvers for BOLA — access other users' data via the getUser query
 
 **Tests:**
+
 - Access another user's private data by changing ID arguments
 - Invoke admin mutations with a regular user token
 - Access hidden fields through direct field argument injection
@@ -310,12 +396,15 @@ Test whether GraphQL resolvers enforce proper authorization per field and operat
 ---
 
 ### 15. Subscription Security
+
 Test GraphQL subscriptions for unauthorized data streaming.
 
 **Usage:**
+
 > Test GraphQL subscriptions for unauthorized real-time data access
 
 **Tests:**
+
 - Subscribe to another user's events without authorization
 - Test subscription filtering bypass
 - WebSocket authentication (token sent at connection vs per-message)

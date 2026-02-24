@@ -20,15 +20,15 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install semgrep bandit safety",
               "bins": ["semgrep", "bandit"],
-              "label": "Install SAST tools (semgrep, bandit, safety)"
+              "label": "Install SAST tools (semgrep, bandit, safety)",
             },
             {
               "id": "brew-secrets",
               "kind": "shell",
               "cmd": "brew install trufflehog gitleaks",
               "bins": ["trufflehog", "gitleaks"],
-              "label": "Install secret scanners (brew)"
-            }
+              "label": "Install secret scanners (brew)",
+            },
           ],
       },
   }
@@ -40,23 +40,25 @@ Automated SAST/DAST/SCA to find vulnerabilities directly in source code and runn
 
 ## Analysis Types
 
-| Type | Tool | Coverage |
-|---|---|---|
-| **SAST** | Semgrep | Multi-language taint analysis |
-| **SAST (Python)** | Bandit | Python-specific security issues |
-| **Secrets** | TruffleHog, Gitleaks | Keys, tokens, passwords in code |
-| **SCA** | Safety, OWASP Dep-Check | Vulnerable dependencies |
-| **DAST** | nuclei, ZAP | Running application vulnerabilities |
-| **IaC Scanning** | Semgrep, checkov | Terraform, CloudFormation misconfigs |
+| Type              | Tool                    | Coverage                             |
+| ----------------- | ----------------------- | ------------------------------------ |
+| **SAST**          | Semgrep                 | Multi-language taint analysis        |
+| **SAST (Python)** | Bandit                  | Python-specific security issues      |
+| **Secrets**       | TruffleHog, Gitleaks    | Keys, tokens, passwords in code      |
+| **SCA**           | Safety, OWASP Dep-Check | Vulnerable dependencies              |
+| **DAST**          | nuclei, ZAP             | Running application vulnerabilities  |
+| **IaC Scanning**  | Semgrep, checkov        | Terraform, CloudFormation misconfigs |
 
 ---
 
 ## Capabilities
 
 ### 1. Multi-Language SAST (Semgrep)
+
 Scan source code for security vulnerabilities across all major languages.
 
 **Usage:**
+
 > Scan the /src directory for OWASP Top 10 vulnerabilities
 
 ```bash
@@ -87,9 +89,11 @@ semgrep --config=p/owasp-top-ten ./src --severity=ERROR
 ---
 
 ### 2. Python Security Analysis (Bandit)
+
 Deep Python-specific static analysis for insecure patterns.
 
 **Usage:**
+
 > Analyze Python codebase at ./app for security issues
 
 ```bash
@@ -122,9 +126,11 @@ for r in data['results']:
 ---
 
 ### 3. Secret & Credential Detection
+
 Find accidentally committed secrets, API keys, tokens, and passwords.
 
 **Usage:**
+
 > Scan the target GitHub repository for leaked credentials and API keys
 
 ```bash
@@ -146,9 +152,11 @@ grep -rni "api_key\|secret\|password\|token\|private_key" \
 ---
 
 ### 4. Dependency / SCA Scanning
+
 Identify known CVEs in project dependencies.
 
 **Usage:**
+
 > Scan Python and Node.js dependencies for known CVEs
 
 ```bash
@@ -175,9 +183,11 @@ trivy image target:latest  # Docker image
 ---
 
 ### 5. IaC Security Scanning
+
 Find misconfigurations in Terraform, CloudFormation, Kubernetes, and Dockerfiles.
 
 **Usage:**
+
 > Scan the Terraform configurations for cloud security misconfigurations
 
 ```bash
@@ -198,9 +208,11 @@ terrascan scan -i terraform -d ./terraform
 ---
 
 ### 6. Dynamic Application Security Testing (DAST)
+
 Test a running application for vulnerabilities.
 
 **Usage:**
+
 > Run DAST against the running application at https://target.com
 
 ```bash
@@ -222,9 +234,11 @@ docker run -t owasp/zap2docker-stable \
 ---
 
 ### 7. Custom Semgrep Rules
+
 Write targeted rules for application-specific patterns.
 
 **Usage:**
+
 > Create a custom Semgrep rule to detect unsafe database queries in the codebase
 
 ```yaml

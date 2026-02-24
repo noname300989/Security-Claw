@@ -1,8 +1,9 @@
 import { spawn } from "node:child_process";
-import { ToolPlugin, ToolHandler } from "@openclaw/plugin-sdk";
+import type { AnyAgentTool } from "@openclaw/plugin-sdk";
 
-const vibecodeTool: ToolHandler = {
+export const vibecodeTool: AnyAgentTool = {
   name: "vibecode",
+  label: "Vibecode",
   description:
     "Delegate a complex coding or analytical task to the Antigravity autonomous sub-agent. " +
     "The sub-agent will run in the background, navigate the filesystem, and write code automatically.",
@@ -22,9 +23,9 @@ const vibecodeTool: ToolHandler = {
     },
     required: ["prompt"],
   },
-  execute: async (args, context) => {
+  execute: async (toolCallId: string, args: Record<string, any>, context: any) => {
     const prompt = args.prompt;
-    const cwd = args.cwd || context.workspacePath || process.cwd();
+    const cwd = args.cwd || process.cwd();
 
     return new Promise((resolve) => {
       let outputBody = "";
@@ -47,32 +48,33 @@ const vibecodeTool: ToolHandler = {
       child.on("close", (code) => {
         if (code === 0) {
           resolve({
-            success: true,
-            terminalOutput: outputBody,
-            summary: `Vibecoding sub-agent finished successfully. Review the terminal output for details.`,
+            content: [
+              {
+                type: "text",
+                text: `Vibecoding sub-agent finished successfully.\n\n${outputBody}`,
+              },
+            ],
+            details: {},
           });
         } else {
           resolve({
-            success: false,
-            terminalOutput: outputBody,
-            summary: `Vibecoding sub-agent exited with error code ${code}.`,
+            content: [
+              {
+                type: "text",
+                text: `Vibecoding sub-agent exited with error code ${code}.\n\n${outputBody}`,
+              },
+            ],
+            details: {},
           });
         }
       });
 
       child.on("error", (err) => {
         resolve({
-          success: false,
-          error: err.message,
-          summary: `Failed to spawn the antigravity CLI process. Is it installed in the PATH?`,
+          content: [{ type: "text", text: `Failed to spawn: ${err.message}` }],
+          details: {},
         });
       });
     });
   },
 };
-
-export default class AntigravityPlugin extends ToolPlugin {
-  getTools() {
-    return [vibecodeTool];
-  }
-}

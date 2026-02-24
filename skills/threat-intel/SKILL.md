@@ -19,8 +19,8 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install requests beautifulsoup4 feedparser lxml httpx rich",
               "bins": [],
-              "label": "Install scraper dependencies (pip)"
-            }
+              "label": "Install scraper dependencies (pip)",
+            },
           ],
       },
   }
@@ -33,35 +33,39 @@ by the latest vulnerability data, exploit code, and threat actor intelligence.
 
 ## Sources Scraped
 
-| Source | Data | URL |
-|---|---|---|
-| **NVD API v2** | Latest CVEs + CVSS scores | nvd.nist.gov/developers |
-| **CISA KEV** | Known Exploited Vulnerabilities catalog | cisa.gov/known-exploited-vulnerabilities-catalog |
-| **Exploit-DB** | Public exploit code (searchsploit) | exploit-db.com |
-| **Packet Storm** | CVE-linked exploit releases | packetstormsecurity.com |
-| **OWASP** | Top 10 updates, new projects | owasp.org |
-| **Nuclei Templates** | Latest community templates | github.com/projectdiscovery/nuclei-templates |
-| **GitHub Security Advisories** | OSS dependency vulns | github.com/advisories |
-| **Shodan Trends** | Internet exposure statistics | trends.shodan.io (via API) |
-| **GreyNoise** | Mass-scanning IPs & campaign activity | api.greynoise.io |
-| **AlienVault OTX** | Threat indicators (IPs, domains, hashes) | otx.alienvault.com |
-| **AttackerKB** | Exploitability assessments | attackerkb.com |
-| **HackerNews / RSS** | Security community discussions | hn.algolia.com |
+| Source                         | Data                                     | URL                                              |
+| ------------------------------ | ---------------------------------------- | ------------------------------------------------ |
+| **NVD API v2**                 | Latest CVEs + CVSS scores                | nvd.nist.gov/developers                          |
+| **CISA KEV**                   | Known Exploited Vulnerabilities catalog  | cisa.gov/known-exploited-vulnerabilities-catalog |
+| **Exploit-DB**                 | Public exploit code (searchsploit)       | exploit-db.com                                   |
+| **Packet Storm**               | CVE-linked exploit releases              | packetstormsecurity.com                          |
+| **OWASP**                      | Top 10 updates, new projects             | owasp.org                                        |
+| **Nuclei Templates**           | Latest community templates               | github.com/projectdiscovery/nuclei-templates     |
+| **GitHub Security Advisories** | OSS dependency vulns                     | github.com/advisories                            |
+| **Shodan Trends**              | Internet exposure statistics             | trends.shodan.io (via API)                       |
+| **GreyNoise**                  | Mass-scanning IPs & campaign activity    | api.greynoise.io                                 |
+| **AlienVault OTX**             | Threat indicators (IPs, domains, hashes) | otx.alienvault.com                               |
+| **AttackerKB**                 | Exploitability assessments               | attackerkb.com                                   |
+| **HackerNews / RSS**           | Security community discussions           | hn.algolia.com                                   |
 
 ---
 
 ## Capabilities
 
 ### 1. Latest CVE Feed (NVD + CISA KEV)
+
 Fetch the most recently published and modified CVEs, prioritized by CISA "Known Exploited" status.
 
 **Usage:**
+
 > Get the latest critical CVEs published in the last 7 days
 
 **Usage:**
+
 > Check if CVE-2024-XXXXX is in the CISA Known Exploited Vulnerabilities catalog
 
 **Python snippet:**
+
 ```python
 import requests, json
 
@@ -101,15 +105,19 @@ for item in cves[:10]:
 ---
 
 ### 2. Exploit-DB Search (searchsploit)
+
 Search for public exploit code matching a product, CVE, or technology.
 
 **Usage:**
+
 > Find public exploits for Apache 2.4.49
 
 **Usage:**
+
 > Search for exploits matching CVE-2024-XXXXX on Exploit-DB
 
 **Commands:**
+
 ```bash
 # CLI via searchsploit (requires exploitdb package)
 searchsploit apache 2.4.49
@@ -121,6 +129,7 @@ brew install exploitdb   # macOS
 ```
 
 **Python snippet (Exploit-DB JSON API):**
+
 ```python
 import requests
 
@@ -142,12 +151,15 @@ for r in results[:5]:
 ---
 
 ### 3. Nuclei Template Updates
+
 Fetch the latest released Nuclei templates from the official community repository.
 
 **Usage:**
+
 > Update Nuclei templates and show what's new this week
 
 **Commands:**
+
 ```bash
 # Update templates (if nuclei installed)
 nuclei -update-templates
@@ -163,12 +175,15 @@ curl -s "https://api.github.com/repos/projectdiscovery/nuclei-templates/commits?
 ---
 
 ### 4. OWASP Project Feed
+
 Scrape OWASP's website and GitHub for updated Top 10 lists, new projects, and blog posts.
 
 **Usage:**
+
 > Check if there are any OWASP Top 10 updates published this month
 
 **Python snippet:**
+
 ```python
 import feedparser
 
@@ -191,12 +206,15 @@ for repo in ["www-project-top-ten", "www-project-api-security", "www-project-llm
 ---
 
 ### 5. GitHub Security Advisories (GHSA)
+
 Fetch GitHub Security Advisories for open-source packages and ecosystems.
 
 **Usage:**
+
 > Get the latest critical GitHub Security Advisories for npm packages
 
 **Commands:**
+
 ```bash
 # GraphQL query via curl (requires GITHUB_TOKEN)
 curl -H "Authorization: bearer $GITHUB_TOKEN" \
@@ -208,12 +226,15 @@ curl -H "Authorization: bearer $GITHUB_TOKEN" \
 ---
 
 ### 6. AlienVault OTX Threat Indicators
+
 Pull indicators of compromise (IPs, domains, file hashes) from AlienVault Open Threat Exchange.
 
 **Usage:**
+
 > Get the latest threat indicators for ransomware campaigns from AlienVault OTX
 
 **Python snippet:**
+
 ```python
 import requests
 
@@ -237,12 +258,15 @@ for p in pulses:
 ---
 
 ### 7. GreyNoise Mass-Scanning Intelligence
+
 Identify IPs actively scanning the internet for specific vulnerabilities or services.
 
 **Usage:**
+
 > Check which IPs are actively scanning for Log4j vulnerabilities right now
 
 **Commands:**
+
 ```bash
 # GreyNoise Community API (free tier)
 curl -H "key: $GREYNOISE_API_KEY" \
@@ -256,12 +280,15 @@ curl -H "key: $GREYNOISE_API_KEY" \
 ---
 
 ### 8. Packet Storm Security Feed
+
 Scrape Packet Storm for the latest exploits, advisories, and security papers.
 
 **Usage:**
+
 > Get today's latest exploit releases from Packet Storm Security
 
 **Python snippet:**
+
 ```python
 import feedparser
 
@@ -274,12 +301,15 @@ for entry in feed.entries[:10]:
 ---
 
 ### 9. Full Intelligence Refresh
+
 Run a comprehensive scrape of all sources and return a unified threat briefing.
 
 **Usage:**
+
 > Run a full threat intelligence refresh and give me today's security briefing
 
 **Output includes:**
+
 - 🔴 Critical CVEs (CVSS ≥ 9.0) from last 48h
 - ⚠️ CISA KEV additions from last 7 days
 - 🎯 New public exploits on Exploit-DB / Packet Storm

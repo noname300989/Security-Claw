@@ -20,8 +20,8 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install requests httpx pwntools scapy cryptography paramiko impacket pyopenssl",
               "bins": [],
-              "label": "Install security Python libraries (pip)"
-            }
+              "label": "Install security Python libraries (pip)",
+            },
           ],
       },
   }
@@ -34,15 +34,15 @@ payload crafting, and vulnerability validation.
 
 ## Pre-Loaded Libraries
 
-| Library | Purpose |
-|---|---|
-| `requests` / `httpx` | HTTP exploitation, session handling |
-| `pwntools` | Binary exploitation, CTF challenges |
-| `scapy` | Network packet crafting and analysis |
-| `cryptography` | Cipher attacks, JWT manipulation, key cracking |
-| `impacket` | SMB, Kerberos, LDAP, NTLM attacks |
-| `paramiko` | SSH client/server automation |
-| `pyOpenSSL` | TLS/SSL vulnerability testing |
+| Library              | Purpose                                        |
+| -------------------- | ---------------------------------------------- |
+| `requests` / `httpx` | HTTP exploitation, session handling            |
+| `pwntools`           | Binary exploitation, CTF challenges            |
+| `scapy`              | Network packet crafting and analysis           |
+| `cryptography`       | Cipher attacks, JWT manipulation, key cracking |
+| `impacket`           | SMB, Kerberos, LDAP, NTLM attacks              |
+| `paramiko`           | SSH client/server automation                   |
+| `pyOpenSSL`          | TLS/SSL vulnerability testing                  |
 
 ## Exploit Templates
 

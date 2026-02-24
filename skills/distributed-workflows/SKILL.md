@@ -7,15 +7,7 @@ description: |
   between phases. The Red Team Agent uses this skill to spin up specialist agents, execute
   attack phases in parallel, and aggregate results — without any manual user intervention.
   All tools are auto-invoked through OpenClaw's execution engine.
-metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "🕸️",
-        "requires": { "bins": ["python3"] },
-        "install": [],
-      },
-  }
+metadata: { "openclaw": { "emoji": "🕸️", "requires": { "bins": ["python3"] }, "install": [] } }
 ---
 
 # Distributed Workflows — Multi-Agent Attack Orchestration
@@ -53,17 +45,17 @@ User: "Run a full assessment on target.com"
 
 ## Specialist Agent Roles
 
-| Agent | Skills Used | Parallel? |
-|---|---|---|
-| **Recon Agent** | `recon`, `threat-intel` | ✅ Phase 1 |
-| **Web Agent** | `web-api-offensive`, `api-tester`, `vuln-scanner` | ✅ Phase 2 |
-| **Cloud Agent** | `cloud-offensive` | ✅ Phase 2 |
-| **Network Agent** | `network-offensive` | ✅ Phase 2 |
-| **AD Agent** | `ad-offensive` | ✅ Phase 2 |
-| **AI/LLM Agent** | `ai-offensive` | ✅ Phase 2 |
-| **Code Agent** | `code-analysis` | ✅ Phase 2 |
-| **Proxy Agent** | `http-proxy`, `browser-automation` | ✅ Phase 2 |
-| **Graph Agent** | `attack-graph`, `knowledge-mgmt` | 🔄 Phase 3 |
+| Agent             | Skills Used                                       | Parallel?  |
+| ----------------- | ------------------------------------------------- | ---------- |
+| **Recon Agent**   | `recon`, `threat-intel`                           | ✅ Phase 1 |
+| **Web Agent**     | `web-api-offensive`, `api-tester`, `vuln-scanner` | ✅ Phase 2 |
+| **Cloud Agent**   | `cloud-offensive`                                 | ✅ Phase 2 |
+| **Network Agent** | `network-offensive`                               | ✅ Phase 2 |
+| **AD Agent**      | `ad-offensive`                                    | ✅ Phase 2 |
+| **AI/LLM Agent**  | `ai-offensive`                                    | ✅ Phase 2 |
+| **Code Agent**    | `code-analysis`                                   | ✅ Phase 2 |
+| **Proxy Agent**   | `http-proxy`, `browser-automation`                | ✅ Phase 2 |
+| **Graph Agent**   | `attack-graph`, `knowledge-mgmt`                  | 🔄 Phase 3 |
 
 ---
 
@@ -72,10 +64,13 @@ User: "Run a full assessment on target.com"
 The agent executes everything. You just describe the objective:
 
 ### Full Campaign
+
 ```
 Run a complete red team assessment against target.com with scope: *.target.com, 192.168.1.0/24
 ```
+
 The agent will:
+
 1. Auto-install any missing tools via `setup-offensive-os.sh`
 2. Run all recon (subfinder, amass, CT logs, httpx) — in parallel
 3. Launch web, cloud, network, and AD agents simultaneously
@@ -84,24 +79,31 @@ The agent will:
 6. Generate executive and technical reports
 
 ### Targeted Workflows
+
 ```
 Run web and API security assessment only, skip network and AD
 ```
+
 ```
 Run recon only — passive, no active scanning
 ```
+
 ```
 Perform cloud security assessment for AWS account with key AKIA...
 ```
+
 ```
 Scan the GitHub org "target-org" for leaked secrets, then check for vulnerable dependencies
 ```
 
 ### Dynamic Agent Collaboration
+
 ```
 If recon finds AWS S3 buckets, immediately hand them to the cloud agent for misconfiguration testing
 ```
+
 The orchestrator automatically:
+
 - Feeds recon output → web/cloud/network agents
 - Feeds cloud creds found → AD agent for password spray
 - Feeds code analysis findings → vuln-scanner for validation

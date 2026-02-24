@@ -19,8 +19,8 @@ metadata:
               "kind": "brew",
               "formula": "tmux",
               "bins": ["tmux"],
-              "label": "Install tmux for session persistence (brew)"
-            }
+              "label": "Install tmux for session persistence (brew)",
+            },
           ],
       },
   }

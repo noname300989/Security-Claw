@@ -1,6 +1,6 @@
 export interface AttackNode {
   id: string;
-  type: 'Vulnerability' | 'Resource' | 'Identity' | 'Goal';
+  type: "Vulnerability" | "Resource" | "Identity" | "Goal";
   label: string;
   metadata: Record<string, any>;
 }
@@ -8,7 +8,7 @@ export interface AttackNode {
 export interface AttackEdge {
   from: string;
   to: string;
-  type: 'ACCESSES' | 'EXPLOITS' | 'ESCALATES' | 'DISCOVERS';
+  type: "ACCESSES" | "EXPLOITS" | "ESCALATES" | "DISCOVERS";
   weight: number;
 }
 

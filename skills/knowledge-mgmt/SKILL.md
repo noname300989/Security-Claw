@@ -19,8 +19,8 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install rich pyyaml jinja2",
               "bins": [],
-              "label": "Install knowledge management dependencies (pip)"
-            }
+              "label": "Install knowledge management dependencies (pip)",
+            },
           ],
       },
   }
@@ -52,12 +52,15 @@ Engagement
 ## Capabilities
 
 ### 1. Create & Save a Finding
+
 Document a confirmed vulnerability with full context.
 
 **Usage:**
+
 > Create a new Critical finding for the SQL injection found in the id parameter at /api/items
 
 **Finding Template (YAML):**
+
 ```yaml
 # findings/CLAW-2026-001-sqli.yaml
 id: CLAW-2026-001
@@ -113,9 +116,11 @@ remediation:
 ---
 
 ### 2. Query Findings Database
+
 Search, filter, and retrieve findings across the engagement.
 
 **Usage:**
+
 > Show all Critical and High findings discovered so far
 
 ```bash
@@ -138,35 +143,43 @@ python3 skills/knowledge-mgmt/km.py get CLAW-2026-001
 ---
 
 ### 3. Generate Executive Report
+
 Produce a professional executive summary for non-technical stakeholders.
 
 **Usage:**
+
 > Generate an executive summary report for all findings discovered in this engagement
 
 **Executive Report Structure:**
+
 ```markdown
 # Penetration Test Executive Summary
+
 **Engagement:** Target Corp — External + Internal Assessment
 **Period:** 2026-02-10 to 2026-02-21
 **Assessor:** OpenClaw Red Team
 
 ## Risk Snapshot
-| Severity | Count |
-|---|---|
-| 🔴 Critical | 3 |
-| 🟠 High     | 7 |
-| 🟡 Medium   | 12 |
-| 🟢 Low      | 8 |
+
+| Severity    | Count |
+| ----------- | ----- |
+| 🔴 Critical | 3     |
+| 🟠 High     | 7     |
+| 🟡 Medium   | 12    |
+| 🟢 Low      | 8     |
 
 ## Top 3 Critical Risks
+
 1. SQL Injection (CVSS 9.8) — Database fully compromised
 2. SSRF to AWS Metadata (CVSS 9.1) — Cloud credentials exposed
 3. Domain Admin via Kerberoasting (CVSS 8.8) — Full AD compromise
 
 ## Business Impact Summary
+
 [Plain-language impact statement for each critical finding]
 
 ## Remediation Priority
+
 [Executive roadmap with effort/impact matrix]
 ```
 
@@ -177,23 +190,34 @@ python3 skills/knowledge-mgmt/km.py report --type executive --output executive_s
 ---
 
 ### 4. Generate Technical Report
+
 Produce a detailed technical report for the engineering/security team.
 
 **Usage:**
+
 > Generate a full technical penetration test report including all findings with PoC evidence
 
 **Technical Report Structure:**
+
 ```markdown
 # Technical Penetration Test Report
 
 ## 1. Scope & Methodology
+
 ## 2. Attack Narrative — Attack Chain Timeline
+
 ## 3. Findings (sorted by severity)
-   ### CLAW-2026-001 — SQL Injection [CRITICAL]
-   - Description, Evidence, PoC, Remediation
+
+### CLAW-2026-001 — SQL Injection [CRITICAL]
+
+- Description, Evidence, PoC, Remediation
+
 ## 4. OWASP Coverage Matrix
+
 ## 5. MITRE ATT&CK Coverage Map
+
 ## 6. Remediation Roadmap
+
 ## 7. Appendices (raw tool output, screenshots)
 ```
 
@@ -204,12 +228,15 @@ python3 skills/knowledge-mgmt/km.py report --type technical --output technical_r
 ---
 
 ### 5. Attack Chain Documentation
+
 Document multi-step attack chains showing how individual findings chain together.
 
 **Usage:**
+
 > Document the attack chain from initial SSRF to domain admin
 
 **Attack Chain YAML:**
+
 ```yaml
 # attack_chains/full_compromise.yaml
 id: CHAIN-001

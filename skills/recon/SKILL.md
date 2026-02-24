@@ -20,8 +20,8 @@ metadata:
               "kind": "shell",
               "cmd": "brew install subfinder httpx amass nmap && pip3 install theHarvester shodan",
               "bins": ["subfinder", "httpx", "amass", "nmap"],
-              "label": "Install OSINT and recon tools (brew + pip)"
-            }
+              "label": "Install OSINT and recon tools (brew + pip)",
+            },
           ],
       },
   }
@@ -54,9 +54,11 @@ Target Domain / IP
 ## Capabilities
 
 ### 1. Passive OSINT (No direct contact)
+
 Gather intelligence without touching the target.
 
 **Usage:**
+
 > Perform passive OSINT on target.com — no direct contact with target systems
 
 ```bash
@@ -82,9 +84,11 @@ site:target.com intext:"api_key" OR intext:"secret" OR intext:"password"
 ---
 
 ### 2. Subdomain Enumeration
+
 Discover all subdomains of the target.
 
 **Usage:**
+
 > Enumerate all subdomains of target.com and identify which are live
 
 ```bash
@@ -109,9 +113,11 @@ echo "[*] Total unique subdomains: $(wc -l < all_subs.txt)"
 ---
 
 ### 3. HTTP Probing & Technology Fingerprinting
+
 Identify which subdomains are live and what technologies they run.
 
 **Usage:**
+
 > Probe all discovered subdomains and fingerprint their technology stack
 
 ```bash
@@ -141,9 +147,11 @@ for t, n in techs.most_common(20):
 ---
 
 ### 4. Port & Service Discovery
+
 Scan live hosts for open ports and identify services.
 
 **Usage:**
+
 > Scan the discovered live hosts for open ports and vulnerable services
 
 ```bash
@@ -164,9 +172,11 @@ nmap -iL live_hosts.txt --script=vuln -p 80,443,8080 -oA nmap_vulns
 ---
 
 ### 5. Cloud Asset Discovery
+
 Find S3 buckets, Azure blobs, GCP storage linked to the target.
 
 **Usage:**
+
 > Discover and test for misconfigured cloud storage assets for target.com
 
 ```bash
@@ -203,6 +213,7 @@ trufflehog s3 --bucket=target-bucket
 ### 6. GitHub / GitLab Secret Scanning
 
 **Usage:**
+
 > Search target's GitHub repositories for leaked API keys, credentials, and secrets
 
 ```bash

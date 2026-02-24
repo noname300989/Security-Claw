@@ -1,18 +1,19 @@
+import { createSubsystemLogger } from "../../../logging/subsystem.js";
 import { runExec } from "../../../process/exec.js";
 import type { HookHandler } from "../../hooks.js";
 import { isMessageReceivedEvent } from "../../internal-hooks.js";
-import { createSubsystemLogger } from "../../../logging/subsystem.js";
 
 const log = createSubsystemLogger("hooks/video-notes");
 
 /**
  * Regex to detect common video URLs
  */
-const VIDEO_URL_REGEX = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be|twitter\.com|x\.com|tiktok\.com|bilibili\.com)\/[^\s]+/gi;
+const VIDEO_URL_REGEX =
+  /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be|twitter\.com|x\.com|tiktok\.com|bilibili\.com)\/[^\s]+/gi;
 
 /**
  * Video notes hook handler
- * 
+ *
  * Automatically transcribes and summarizes video links received in messages.
  */
 const videoNotesHandler: HookHandler = async (event) => {
@@ -33,7 +34,7 @@ const videoNotesHandler: HookHandler = async (event) => {
   for (const url of videoUrls) {
     try {
       log.debug(`Processing video: ${url}`);
-      
+
       // Send a "processing" status message back
       event.messages.push(`🎬 Detected video: ${url}. Generating notes...`);
 
@@ -41,7 +42,7 @@ const videoNotesHandler: HookHandler = async (event) => {
       // We use --youtube auto for YouTube links, and best-effort for others.
       const isYouTube = url.includes("youtube.com") || url.includes("youtu.be");
       const args = [url, "--length", "medium"];
-      
+
       if (isYouTube) {
         args.push("--youtube", "auto");
       }
@@ -55,7 +56,9 @@ const videoNotesHandler: HookHandler = async (event) => {
         event.messages.push(`❌ Could not generate notes for ${url}.`);
       }
     } catch (err) {
-      log.error(`Failed to process video ${url}:`, { error: err instanceof Error ? err.message : String(err) });
+      log.error(`Failed to process video ${url}:`, {
+        error: err instanceof Error ? err.message : String(err),
+      });
       event.messages.push(`❌ Error processing video ${url}.`);
     }
   }

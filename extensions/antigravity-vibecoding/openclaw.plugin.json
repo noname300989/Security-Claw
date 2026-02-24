@@ -2,6 +2,7 @@
   "id": "antigravity-vibecoding",
   "name": "Antigravity Vibecoding",
   "description": "Provides the 'vibecode' native tool to delegate complex autonomous coding and file generation tasks to the Antigravity CLI.",
+  "configSchema": {},
   "entry": "dist/index.js",
   "permissions": ["child_process"]
 }

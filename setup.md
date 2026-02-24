@@ -23,13 +23,13 @@
 
 ## 1. Prerequisites
 
-| Requirement | Version | Install |
-|---|---|---|
-| **Node.js** | >= 22.12.0 | `brew upgrade node` or `nvm install 22` |
-| **pnpm** | >= 9.0 | `npm install -g pnpm` |
-| **Homebrew** | Latest | [brew.sh](https://brew.sh) |
-| **Python 3** | >= 3.10 | `brew install python3` |
-| **Git** | Any | `brew install git` |
+| Requirement  | Version    | Install                                 |
+| ------------ | ---------- | --------------------------------------- |
+| **Node.js**  | >= 22.12.0 | `brew upgrade node` or `nvm install 22` |
+| **pnpm**     | >= 9.0     | `npm install -g pnpm`                   |
+| **Homebrew** | Latest     | [brew.sh](https://brew.sh)              |
+| **Python 3** | >= 3.10    | `brew install python3`                  |
+| **Git**      | Any        | `brew install git`                      |
 
 ### Verify Prerequisites
 
@@ -55,6 +55,7 @@ chmod +x setup-offensive-os.sh
 ```
 
 This will:
+
 - ✅ Verify Node.js version
 - ✅ Install all Phase 1–4 tools via Homebrew/pip
 - ✅ Run `pnpm install` and `pnpm build`
@@ -85,16 +86,16 @@ jwt_tool -h
 
 **Tools installed:**
 
-| Tool | Purpose | OWASP Coverage |
-|---|---|---|
-| `nuclei` | Template-based vulnerability scanner | WSTG, API Security |
-| `sqlmap` | SQL injection detection & exploitation | A03 Injection |
-| `ffuf` | Web fuzzer (dirs, params, auth bypass) | A07 Auth Failures |
-| `semgrep` | SAST for business logic flaws | A04 Insecure Design |
-| `amass` | Subdomain enumeration | WSTG-INFO |
-| `subfinder` | Fast subdomain discovery | WSTG-INFO |
-| `httpx` | HTTP probing & fingerprinting | WSTG-INFO |
-| `jwt_tool` | JWT security testing | A02 Crypto Failures |
+| Tool        | Purpose                                | OWASP Coverage      |
+| ----------- | -------------------------------------- | ------------------- |
+| `nuclei`    | Template-based vulnerability scanner   | WSTG, API Security  |
+| `sqlmap`    | SQL injection detection & exploitation | A03 Injection       |
+| `ffuf`      | Web fuzzer (dirs, params, auth bypass) | A07 Auth Failures   |
+| `semgrep`   | SAST for business logic flaws          | A04 Insecure Design |
+| `amass`     | Subdomain enumeration                  | WSTG-INFO           |
+| `subfinder` | Fast subdomain discovery               | WSTG-INFO           |
+| `httpx`     | HTTP probing & fingerprinting          | WSTG-INFO           |
+| `jwt_tool`  | JWT security testing                   | A02 Crypto Failures |
 
 ---
 
@@ -118,12 +119,12 @@ scout --help
 
 **Tools installed:**
 
-| Tool | Purpose | Cloud |
-|---|---|---|
-| `aws cli` | AWS enumeration & testing | AWS |
-| `trufflehog` | Credential/secret leak scanning | All |
-| `scout` (ScoutSuite) | Multi-cloud security audit | AWS/Azure/GCP |
-| `pacu` | AWS exploitation framework | AWS |
+| Tool                 | Purpose                         | Cloud         |
+| -------------------- | ------------------------------- | ------------- |
+| `aws cli`            | AWS enumeration & testing       | AWS           |
+| `trufflehog`         | Credential/secret leak scanning | All           |
+| `scout` (ScoutSuite) | Multi-cloud security audit      | AWS/Azure/GCP |
+| `pacu`               | AWS exploitation framework      | AWS           |
 
 ---
 
@@ -153,12 +154,12 @@ kerbrute --help
 
 **Tools installed:**
 
-| Tool | Purpose | ATT&CK Technique |
-|---|---|---|
-| `impacket` | Kerberoasting, DCSync, PtH, PtT | T1558, T1003, T1550 |
-| `crackmapexec` | SMB/LDAP recon & lateral movement | T1021, T1046 |
-| `bloodhound-python` | AD attack path ingestion | T1069, T1087 |
-| `kerbrute` | Kerberos user enumeration | T1110 |
+| Tool                | Purpose                           | ATT&CK Technique    |
+| ------------------- | --------------------------------- | ------------------- |
+| `impacket`          | Kerberoasting, DCSync, PtH, PtT   | T1558, T1003, T1550 |
+| `crackmapexec`      | SMB/LDAP recon & lateral movement | T1021, T1046        |
+| `bloodhound-python` | AD attack path ingestion          | T1069, T1087        |
+| `kerbrute`          | Kerberos user enumeration         | T1110               |
 
 ---
 
@@ -179,12 +180,12 @@ bettercap --version
 
 **Tools installed:**
 
-| Tool | Purpose | ATT&CK Technique |
-|---|---|---|
-| `nmap` | Port scanning, service fingerprinting, vuln scripts | T1046 |
-| `masscan` | Ultra-fast port scanning (internet-scale) | T1046 |
-| `bettercap` | MITM, ARP poisoning, traffic capture | T1557 |
-| `hydra` | Credential brute-forcing | T1110 |
+| Tool        | Purpose                                             | ATT&CK Technique |
+| ----------- | --------------------------------------------------- | ---------------- |
+| `nmap`      | Port scanning, service fingerprinting, vuln scripts | T1046            |
+| `masscan`   | Ultra-fast port scanning (internet-scale)           | T1046            |
+| `bettercap` | MITM, ARP poisoning, traffic capture                | T1557            |
+| `hydra`     | Credential brute-forcing                            | T1110            |
 
 ---
 
@@ -263,6 +264,7 @@ pnpm openclaw agent --activation red-team
 ### Example Prompts
 
 **Phase 1 — Web Application Testing:**
+
 ```
 Discover the attack surface for example.com and run full web vulnerability assessment
 Test https://target.com/api/v1 for OWASP API Top 10 vulnerabilities
@@ -271,6 +273,7 @@ Test JWT token: eyJhbGci... for manipulation vulnerabilities
 ```
 
 **Phase 2 — Cloud Assessment:**
+
 ```
 Scan AWS account for IAM privilege escalation paths using key AKIA...
 Check for misconfigured S3 buckets for company: target-corp
@@ -278,6 +281,7 @@ Scan GitHub repos of target-org for leaked credentials
 ```
 
 **Phase 3 — Active Directory:**
+
 ```
 Enumerate Active Directory at DC: 192.168.1.10, Domain: corp.local
 Perform Kerberoasting against corp.local using credentials user:password@dc.corp.local
@@ -285,6 +289,7 @@ Run BloodHound analysis and find path to Domain Admin
 ```
 
 **Phase 4 — Network:**
+
 ```
 Full network discovery and vulnerability scan of 192.168.1.0/24
 Test SMB service at 192.168.1.10 for EternalBlue and credential attacks
@@ -292,6 +297,7 @@ Set up MITM attack on internal network segment 10.0.0.0/24
 ```
 
 **Phase 5 — Attack Graph & Reporting:**
+
 ```
 Correlate all findings and build the highest-risk attack chain
 Generate executive penetration test report for the assessment
@@ -300,6 +306,7 @@ Create prioritized remediation roadmap
 ```
 
 **Full Campaign:**
+
 ```
 Start a full red team assessment for target.com with scope: *.target.com, 192.168.1.0/24
 ```
@@ -327,31 +334,31 @@ OpenClaw Offensive OS
 
 ### Phase Summary
 
-| Phase | Skills | OWASP / Framework | Key Tools |
-|---|---|---|---|
-| **1 — Web & API** | `web-api-offensive`, `ai-offensive` | OWASP Web Top 10, API Top 10, LLM Top 10, WSTG | Nuclei, SQLMap, ffuf, jwt_tool |
-| **2 — Cloud** | `cloud-offensive` | OWASP Cloud Top 10, MITRE ATT&CK Cloud | ScoutSuite, Pacu, TruffleHog |
-| **3 — Active Directory** | `ad-offensive` | MITRE ATT&CK Enterprise | Impacket, BloodHound, CME |
-| **4 — Network** | `network-offensive` | NIST SP 800-115, MITRE ATT&CK | nmap, masscan, Bettercap |
-| **5 — Attack Graph** | `attack-graph` | ATT&CK, CVSS v3.1, SARIF | networkx, custom analysis |
-| **Orchestration** | `red-team-orchestration` | Full kill chain | All above |
+| Phase                    | Skills                              | OWASP / Framework                              | Key Tools                      |
+| ------------------------ | ----------------------------------- | ---------------------------------------------- | ------------------------------ |
+| **1 — Web & API**        | `web-api-offensive`, `ai-offensive` | OWASP Web Top 10, API Top 10, LLM Top 10, WSTG | Nuclei, SQLMap, ffuf, jwt_tool |
+| **2 — Cloud**            | `cloud-offensive`                   | OWASP Cloud Top 10, MITRE ATT&CK Cloud         | ScoutSuite, Pacu, TruffleHog   |
+| **3 — Active Directory** | `ad-offensive`                      | MITRE ATT&CK Enterprise                        | Impacket, BloodHound, CME      |
+| **4 — Network**          | `network-offensive`                 | NIST SP 800-115, MITRE ATT&CK                  | nmap, masscan, Bettercap       |
+| **5 — Attack Graph**     | `attack-graph`                      | ATT&CK, CVSS v3.1, SARIF                       | networkx, custom analysis      |
+| **Orchestration**        | `red-team-orchestration`            | Full kill chain                                | All above                      |
 
 ---
 
 ## 7. OWASP Coverage Matrix
 
-| OWASP Standard | Coverage |
-|---|---|
-| OWASP Web Top 10 (2021 + 2025 draft) | ✅ A01–A10 all covered |
-| OWASP API Security Top 10 (2023) | ✅ API1–API10 all covered |
-| OWASP LLM Top 10 (2025) | ✅ LLM01–LLM10 all covered |
-| OWASP Agentic AI Top 10 | ✅ Agent hijacking, excessive agency |
-| OWASP MCP Top 10 | ✅ MC1–MC5 test cases |
-| OWASP WSTG v4.2 | ✅ INFO, AUTH, ATHZ, INPV, BUSL, SESS |
-| MITRE ATT&CK Enterprise | ✅ All tactics from Recon → Impact |
-| MITRE ATT&CK Cloud | ✅ IaaS, SaaS, containers |
-| NIST SP 800-115 | ✅ Network assessment methodology |
-| CIS Benchmarks | ✅ Validation against CIS controls |
+| OWASP Standard                       | Coverage                              |
+| ------------------------------------ | ------------------------------------- |
+| OWASP Web Top 10 (2021 + 2025 draft) | ✅ A01–A10 all covered                |
+| OWASP API Security Top 10 (2023)     | ✅ API1–API10 all covered             |
+| OWASP LLM Top 10 (2025)              | ✅ LLM01–LLM10 all covered            |
+| OWASP Agentic AI Top 10              | ✅ Agent hijacking, excessive agency  |
+| OWASP MCP Top 10                     | ✅ MC1–MC5 test cases                 |
+| OWASP WSTG v4.2                      | ✅ INFO, AUTH, ATHZ, INPV, BUSL, SESS |
+| MITRE ATT&CK Enterprise              | ✅ All tactics from Recon → Impact    |
+| MITRE ATT&CK Cloud                   | ✅ IaaS, SaaS, containers             |
+| NIST SP 800-115                      | ✅ Network assessment methodology     |
+| CIS Benchmarks                       | ✅ Validation against CIS controls    |
 
 ---
 
@@ -367,17 +374,17 @@ pip3 install requests beautifulsoup4 feedparser lxml rich
 
 ### Sources Scraped
 
-| Source | Data |
-|---|---|
-| NVD API v2 | Latest CVEs with CVSS scores |
-| CISA KEV | Known Exploited Vulnerabilities catalog |
-| Exploit-DB | Public exploit code search |
-| Packet Storm | New exploit/advisory releases (RSS) |
-| OWASP Blog | Top 10 updates, new projects |
-| Nuclei Templates | Latest community template commits (GitHub) |
-| GitHub Advisories | OSS Security Advisories (npm, PyPI, etc.) |
-| AlienVault OTX | Threat indicators (IPs, domains, hashes) |
-| GreyNoise | Active internet-scanning campaigns |
+| Source            | Data                                       |
+| ----------------- | ------------------------------------------ |
+| NVD API v2        | Latest CVEs with CVSS scores               |
+| CISA KEV          | Known Exploited Vulnerabilities catalog    |
+| Exploit-DB        | Public exploit code search                 |
+| Packet Storm      | New exploit/advisory releases (RSS)        |
+| OWASP Blog        | Top 10 updates, new projects               |
+| Nuclei Templates  | Latest community template commits (GitHub) |
+| GitHub Advisories | OSS Security Advisories (npm, PyPI, etc.)  |
+| AlienVault OTX    | Threat indicators (IPs, domains, hashes)   |
+| GreyNoise         | Active internet-scanning campaigns         |
 
 ### Usage
 
@@ -465,26 +472,34 @@ sudo masscan TARGET CIDR --rate 1000
 OpenClaw employs a sophisticated agent-tool loop to execute complex offensive security workflows. Understanding this mechanism is key to extending the platform or troubleshooting execution.
 
 ### Agent-Tool Loop
+
 When an agent is activated, it enters a continuous loop:
+
 1.  **Reasoning**: The LLM analyzes the prompt and current state.
 2.  **Tool Selection**: The LLM decides which tool to invoke (e.g., `exec`, `read`).
 3.  **Execution**: OpenClaw captures the tool request and executes it locally or in a sandbox.
 4.  **Feedback**: Tool results (standard output, errors, file contents) are fed back to the LLM.
 
 ### The `exec` Tool
+
 The `exec` tool is the workhorse of OpenClaw, enabling shell command execution.
+
 - **Backgrounding**: Supports long-running tasks via `yieldMs` or `background: true`.
 - **PTY Support**: Can run commands requiring a TTY (like `nmap` or interactive shells).
 - **Sandboxing**: Can be configured to run within a Docker container for isolation.
 
 ### Gateway & Security
+
 The OpenClaw Gateway acts as a mediator for all tool invocations:
+
 - **Approvals**: Sensitive commands (especially elevated ones) require manual operator approval.
 - **Safe Bins**: A list of pre-verified binaries that can be executed without explicit approval.
 - **Security Policies**: Enforces rules like `workspaceOnly` to prevent agents from accessing files outside their designated workspace.
 
 ### Tool Resolution & Plugins
+
 Tools are dynamically assembled for each agent session:
+
 - **Core Tools**: Standard tools like `read`, `write`, `edit`, and `exec`.
 - **Plugin Tools**: Custom tools provided by OpenClaw plugins (e.g., `browser`, `web-search`).
 - **Channel Tools**: Platform-specific tools for integrations like Slack or Discord.
@@ -503,4 +518,4 @@ Tools are dynamically assembled for each agent session:
 
 ---
 
-*Generated by OpenClaw Offensive OS — Red Team Agent*
+_Generated by OpenClaw Offensive OS — Red Team Agent_

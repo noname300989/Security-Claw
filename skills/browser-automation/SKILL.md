@@ -20,8 +20,8 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install playwright && python3 -m playwright install chromium",
               "bins": [],
-              "label": "Install Playwright + Chromium (pip)"
-            }
+              "label": "Install Playwright + Chromium (pip)",
+            },
           ],
       },
   }
@@ -42,9 +42,11 @@ python3 -m playwright install firefox    # optional
 ## Capabilities
 
 ### 1. XSS Testing (Reflected, Stored, DOM)
+
 Inject payloads and verify actual JavaScript execution in a real browser context.
 
 **Usage:**
+
 > Test https://target.com for DOM-based XSS using browser automation
 
 ```python
@@ -77,9 +79,11 @@ with sync_playwright() as p:
 ---
 
 ### 2. CSRF Testing
+
 Automate cross-origin state-changing request tests to detect missing CSRF protections.
 
 **Usage:**
+
 > Test the account settings update at https://target.com for CSRF vulnerabilities
 
 ```python
@@ -108,9 +112,11 @@ with sync_playwright() as p:
 ---
 
 ### 3. Authentication Flow Analysis
+
 Automate login, session handling, and token lifecycle testing.
 
 **Usage:**
+
 > Analyze the authentication flow at https://target.com and test for session fixation
 
 ```python
@@ -147,9 +153,11 @@ with sync_playwright() as p:
 ---
 
 ### 4. Network Request Interception
+
 Intercept, modify, and block browser network requests.
 
 **Usage:**
+
 > Intercept all API calls made during login and analyze request/response pairs
 
 ```python
@@ -177,9 +185,11 @@ with sync_playwright() as p:
 ---
 
 ### 5. Multi-Tab / Multi-Context Testing
+
 Run simultaneous browser contexts for complex multi-user attack scenarios.
 
 **Usage:**
+
 > Test for BOLA using two separate browser sessions (admin and regular user)
 
 ```python
@@ -211,6 +221,7 @@ with sync_playwright() as p:
 ---
 
 ### 6. Screenshot & Video Evidence
+
 Automatically capture visual evidence for reports.
 
 ```python

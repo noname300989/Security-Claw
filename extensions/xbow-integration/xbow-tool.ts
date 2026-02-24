@@ -1,10 +1,10 @@
 import { spawn } from "node:child_process";
 import * as path from "node:path";
-import type { OpenClawPluginAPI } from "@openclaw/plugin-sdk";
+import type { OpenClawPluginApi } from "@openclaw/plugin-sdk";
 import { Type as t } from "@sinclair/typebox";
 
-export function createXbowTool(api: OpenClawPluginAPI) {
-  return api.createTool({
+export function createXbowTool(api: OpenClawPluginApi): any {
+  return {
     name: "xbow_scan",
     description:
       "Launch and monitor autonomous XBOW security assessments using AI agents. " +
@@ -24,7 +24,7 @@ export function createXbowTool(api: OpenClawPluginAPI) {
       scanId: t.Optional(t.String({ description: "XBOW Scan ID" })),
       reportOutput: t.Optional(t.String({ description: "Optional custom path for output report" })),
     }),
-    execute: async (params, ctx) => {
+    execute: async (params: Record<string, any>, ctx: Record<string, any>) => {
       return new Promise((resolve, reject) => {
         // Resolve script path relative to the active workspace
         const workspacePath = ctx.getWorkspaceRoot();
@@ -134,5 +134,5 @@ export function createXbowTool(api: OpenClawPluginAPI) {
         });
       });
     },
-  });
+  };
 }

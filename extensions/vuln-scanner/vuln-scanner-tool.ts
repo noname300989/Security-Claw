@@ -21,10 +21,7 @@ function resolveVulnScannerPath(): string {
 /**
  * Run python3 vuln_scanner.py with the given args and return stdout.
  */
-async function runVulnScanner(
-  args: string[],
-  timeoutMs: number,
-): Promise<string> {
+async function runVulnScanner(args: string[], timeoutMs: number): Promise<string> {
   const scriptPath = resolveVulnScannerPath();
 
   return new Promise((resolve, reject) => {
@@ -47,8 +44,12 @@ async function runVulnScanner(
 
     child.stdout?.setEncoding("utf8");
     child.stderr?.setEncoding("utf8");
-    child.stdout?.on("data", (c: string) => { stdout += c; });
-    child.stderr?.on("data", (c: string) => { stderr += c; });
+    child.stdout?.on("data", (c: string) => {
+      stdout += c;
+    });
+    child.stderr?.on("data", (c: string) => {
+      stderr += c;
+    });
 
     const timer = setTimeout(() => {
       child.kill("SIGKILL");
@@ -74,12 +75,7 @@ async function runVulnScanner(
 async function runAutoInstall(phase: string): Promise<string> {
   const here = new URL(import.meta.url).pathname;
   const repoRoot = path.resolve(path.dirname(here), "../../");
-  const autoInstallPath = path.join(
-    repoRoot,
-    "skills",
-    "distributed-workflows",
-    "auto_install.py",
-  );
+  const autoInstallPath = path.join(repoRoot, "skills", "distributed-workflows", "auto_install.py");
 
   return new Promise((resolve) => {
     const child = spawn("python3", [autoInstallPath, "--phase", phase], {
@@ -89,8 +85,12 @@ async function runAutoInstall(phase: string): Promise<string> {
     let out = "";
     child.stdout?.setEncoding("utf8");
     child.stderr?.setEncoding("utf8");
-    child.stdout?.on("data", (c: string) => { out += c; });
-    child.stderr?.on("data", (c: string) => { out += c; });
+    child.stdout?.on("data", (c: string) => {
+      out += c;
+    });
+    child.stderr?.on("data", (c: string) => {
+      out += c;
+    });
     child.once("exit", () => resolve(out));
   });
 }
@@ -174,7 +174,8 @@ export function createVulnScannerTool(_api: OpenClawPluginApi) {
       ),
       auto_install: Type.Optional(
         Type.Boolean({
-          description: "Run auto-install for missing prerequisites before scanning (default: false)",
+          description:
+            "Run auto-install for missing prerequisites before scanning (default: false)",
         }),
       ),
       timeout_ms: Type.Optional(
@@ -224,8 +225,7 @@ export function createVulnScannerTool(_api: OpenClawPluginApi) {
         args.push("--severity", params.severity.trim());
       }
 
-      const timeoutMs =
-        typeof params.timeout_ms === "number" ? params.timeout_ms : 300_000;
+      const timeoutMs = typeof params.timeout_ms === "number" ? params.timeout_ms : 300_000;
 
       const rawOutput = await runVulnScanner(args, timeoutMs);
 
@@ -289,12 +289,20 @@ interface FindingJson {
 }
 
 const SEVERITY_ORDER: Record<string, number> = {
-  CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3, INFO: 4,
+  CRITICAL: 0,
+  HIGH: 1,
+  MEDIUM: 2,
+  LOW: 3,
+  INFO: 4,
 };
 
 function buildSummary(target: string, findings: FindingJson[]) {
   const bySeverity: Record<string, number> = {
-    CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0,
+    CRITICAL: 0,
+    HIGH: 0,
+    MEDIUM: 0,
+    LOW: 0,
+    INFO: 0,
   };
   for (const f of findings) {
     const sev = (f.severity ?? "INFO").toUpperCase();

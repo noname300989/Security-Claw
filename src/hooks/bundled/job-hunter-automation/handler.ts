@@ -1,20 +1,23 @@
-import type { HookHandler } from "../../hooks.js";
 import { createSubsystemLogger } from "../../../logging/subsystem.js";
+import type { HookHandler } from "../../hooks.js";
 
 const log = createSubsystemLogger("hooks/job-hunter-automation");
 
 /**
  * Job Hunter Automation Hook Handler
- * 
+ *
  * Automatically applies to Pentesting and AppSec jobs daily on LinkedIn, Naukri, and Indeed.
  */
 const jobHunterAutomationHandler: HookHandler = async (event) => {
-  if ((event as any).type !== "cron" || (event as any).action !== "daily") {
+  if (
+    (event as unknown as Record<string, unknown>).type !== "cron" ||
+    (event as unknown as Record<string, unknown>).action !== "daily"
+  ) {
     return;
   }
 
   log.info("Starting Daily Job Hunter routine...");
-  
+
   // 1. Check active browser sessions for Naukri, LinkedIn, Indeed.
   const hasActiveSessions = true; // Simulated check
 
@@ -27,26 +30,26 @@ const jobHunterAutomationHandler: HookHandler = async (event) => {
   }
 
   log.info("Browsing job portals for 'Penetration Testing' and 'Application Security'...");
-  
+
   // 2. Simulated application logic
   const jobsApplied = [
     "Senior AppSec Engineer at Acme Corp (LinkedIn)",
-    "Penetration Tester at CyberSafe (Indeed)"
+    "Penetration Tester at CyberSafe (Indeed)",
   ];
 
-  const report = `
+  const _report = `
 🛠️ **Job Hunter Daily Report**
 Applied to ${jobsApplied.length} new jobs today:
-${jobsApplied.map(j => `- ${j}`).join("\n")}
+${jobsApplied.map((j) => `- ${j}`).join("\n")}
 
 Active sessions maintained on all platforms.
   `;
 
   // 3. Send report out
   log.info("Dispatching job report to primary channels: whatsapp, telegram, discord.");
-  
+
   // Example native routing logic:
-  // await sendMulticastMessage(report, ["whatsapp", "telegram", "discord"]);
+  // await sendMulticastMessage(_report, ["whatsapp", "telegram", "discord"]);
 };
 
 export default jobHunterAutomationHandler;
