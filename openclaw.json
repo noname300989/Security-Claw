@@ -179,6 +179,7 @@
           "htb-pwn",
           "xbow-integration",
           "burpsuite-scanner",
+          "browser-ext-pentest",
           "http-proxy",
           "browser-automation",
           "terminal-env",
