@@ -1,6 +1,5 @@
 {
   // OpenClaw Offensive OS — Active Configuration
-  // Auto-generated from openclaw.json.template with security hardening applied.
   // See: https://docs.openclaw.ai/gateway/configuration
 
   // ─────────────────────────────────────────────────────────
@@ -29,6 +28,32 @@
   "logging": {
     // Redact sensitive data from tool call logs
     "redactSensitive": "tools"
+  },
+
+  // ─────────────────────────────────────────────────────────
+  // CHANNELS — Add tokens to .env to activate each channel
+  // Docs: https://docs.openclaw.ai/channels
+  // ─────────────────────────────────────────────────────────
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "token": "${TELEGRAM_BOT_TOKEN}"
+    },
+    "discord": {
+      "enabled": true,
+      "token": "${DISCORD_BOT_TOKEN}"
+    },
+    "slack": {
+      "enabled": true,
+      "botToken": "${SLACK_BOT_TOKEN}",
+      "appToken": "${SLACK_APP_TOKEN}"
+    },
+    "whatsapp": {
+      "enabled": false
+    },
+    "signal": {
+      "enabled": false
+    }
   },
 
   // ─────────────────────────────────────────────────────────
@@ -107,6 +132,8 @@
           "- api-tester: OpenAPI spec import, GraphQL introspection, batch attacks",
           "- vuln-scanner: SQLi, XSS, SSRF, path traversal, cmdi, Nuclei CVEs",
           "- htb-pwn: HackTheBox automation — browse active boxes, enumerate, exploit, report, broadcast to Discord/Telegram/WhatsApp",
+          "- xbow-integration: Launch autonomous XBOW AI agents to discover and exploit vulnerabilities with zero false positives",
+          "- burpsuite-scanner: BurpSuite automated scanning (high/critical only, 1 thread)",
           "- http-proxy: mitmproxy intercept, replay, TLS inspection",
           "- browser-automation: Playwright XSS, CSRF, auth flows, multi-tab",
           "- terminal-env: tmux sessions, audit logging, parallel execution",
@@ -119,6 +146,7 @@
           "- code-analysis: Semgrep, Bandit, SCA, IaC scanning, DAST",
           "- knowledge-mgmt: YAML findings DB, executive/technical reports",
           "- threat-intel: Live CVEs, CISA KEV, Exploit-DB, Nuclei templates",
+          "- antigravity-vibecoding: Delegate complex coding/patching to autonomous sub-agent",
           "",
           "## OWASP RISK MAPPING",
           "Always map findings to their relevant OWASP category:",
@@ -149,6 +177,8 @@
           "api-tester",
           "vuln-scanner",
           "htb-pwn",
+          "xbow-integration",
+          "burpsuite-scanner",
           "http-proxy",
           "browser-automation",
           "terminal-env",
@@ -160,7 +190,10 @@
           "attack-graph",
           "code-analysis",
           "knowledge-mgmt",
-          "threat-intel"
+          "threat-intel",
+          "antigravity-vibecoding",
+          "discord",
+          "telegram"
         ],
         "identity": {
           "name": "Red Team",

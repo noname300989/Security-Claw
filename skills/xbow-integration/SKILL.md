@@ -1,11 +1,11 @@
 ---
 name: xbow-integration
 description: |
-  Integration with the XBOW autonomous offensive security platform. Deploys hundreds
-  of specialized AI agents simultaneously to autonomously discover and confidently exploit
-  application vulnerabilities (SQLi, XSS, IDOR, SSRF). Findings are only surfaced once
-  exploitability is confirmed through controlled, non-destructive challenges (zero false
-  positives). Provides CI/CD-ready API integration for continuous testing.
+  Autonomous offensive security swarm — replicates XBOW capabilities using open-source tools.
+  NO API KEY REQUIRED. Deploys parallel specialist agents (nuclei, sqlmap, dalfox, ffuf, httpx)
+  to autonomously discover and confirm exploitable vulnerabilities (SQLi, XSS, IDOR, SSRF, CVEs).
+  Only surfaces findings with confirmed PoC evidence (zero false positives).
+  Produces OWASP-mapped Markdown reports with CVSS scores and remediation guidance.
 metadata:
   {
     "openclaw":
@@ -19,20 +19,64 @@ metadata:
               "kind": "shell",
               "cmd": "pip3 install requests rich pyyaml",
               "bins": [],
-              "label": "Install XBOW API dependencies (pip)",
+              "label": "Install swarm dependencies (pip)",
+            },
+            {
+              "id": "brew-nuclei",
+              "kind": "shell",
+              "cmd": "which nuclei || brew install nuclei",
+              "bins": ["nuclei"],
+              "label": "Install nuclei (CVE + OWASP scanner)",
+            },
+            {
+              "id": "brew-httpx",
+              "kind": "shell",
+              "cmd": "which httpx || brew install httpx",
+              "bins": ["httpx"],
+              "label": "Install httpx (fingerprinting)",
+            },
+            {
+              "id": "brew-ffuf",
+              "kind": "shell",
+              "cmd": "which ffuf || brew install ffuf",
+              "bins": ["ffuf"],
+              "label": "Install ffuf (endpoint discovery)",
+            },
+            {
+              "id": "brew-sqlmap",
+              "kind": "shell",
+              "cmd": "which sqlmap || brew install sqlmap",
+              "bins": ["sqlmap"],
+              "label": "Install sqlmap (SQL injection)",
+            },
+            {
+              "id": "brew-dalfox",
+              "kind": "shell",
+              "cmd": "which dalfox || brew install dalfox",
+              "bins": ["dalfox"],
+              "label": "Install dalfox (XSS confirmation)",
             },
           ],
       },
   }
 ---
 
-# XBOW Platform Integration
+# 🏹 XBOW-Equivalent Autonomous Pentesting Swarm
 
-Unleash the **XBOW** autonomous testing swarm. XBOW uses creative AI reasoning to explore attack paths, map the application surface, and generate reproducible, verified exploits.
+Orchestrates a **parallel multi-agent swarm** that replicates XBOW's core capabilities using entirely open-source tools.
 
-This skill allows the OpenClaw Red Team Agent to command the XBOW swarm programmatically, delegating complex web application and API testing to a specialized fleet of AI hackers.
+> ✅ **No API key required.** Fully self-contained and free.
 
-> 🔑 **Requirement:** You must configure `XBOW_API_KEY` in your `.env` file to authenticate with the XBOW public API.
+---
+
+## How It Works (Mirrors XBOW Architecture)
+
+| Phase                  | What Happens                             | Tools                                    |
+| ---------------------- | ---------------------------------------- | ---------------------------------------- |
+| **1. Surface Mapping** | Fingerprint + discover all endpoints     | `httpx`, `ffuf`                          |
+| **2. Parallel Swarm**  | All agents attack simultaneously         | `nuclei`, `sqlmap`, `dalfox`, SSRF probe |
+| **3. Exploit Confirm** | Filter to only confirmed PoCs (zero FPs) | Internal validator                       |
+| **4. Report**          | OWASP-mapped Markdown report with CVSS   | Auto-generated                           |
 
 ---
 
@@ -40,74 +84,57 @@ This skill allows the OpenClaw Red Team Agent to command the XBOW swarm programm
 
 ### 1. Launch Autonomous Swarm
 
-Trigger a comprehensive security assessment against a target URL or API endpoint.
-
-**Usage:**
-
-> Launch an XBOW scan against https://target.com with auth headers
-
 ```bash
-# Launch a basic scan
+# Basic scan
 python3 skills/xbow-integration/scripts/xbow_client.py launch https://target.com
 
-# Launch with authentication state
-python3 skills/xbow-integration/scripts/xbow_client.py launch https://target.com --headers '{"Authorization": "Bearer token123"}'
+# Authenticated scan
+python3 skills/xbow-integration/scripts/xbow_client.py launch https://target.com \
+  --headers '{"Authorization": "Bearer token123"}' \
+  --output report.md
 ```
 
----
-
-### 2. Monitor Assessment Status
-
-Track the progress of the XBOW agents as they map the application and hunt for vulnerabilities.
-
-**Usage:**
-
-> Check the status of XBOW scan ID 12345
+### 2. Check Scan Status
 
 ```bash
-python3 skills/xbow-integration/scripts/xbow_client.py status 12345
+python3 skills/xbow-integration/scripts/xbow_client.py status <scan_id>
 ```
 
-_Returns phase progress (e.g., surface mapping, discovering, exploiting, finalized)._
+Returns: phase, agents running, confirmed findings count, endpoints scanned.
 
----
-
-### 3. Retrieve Verified Exploits
-
-XBOW only returns vulnerabilities if it can successfully exploit them non-destructively.
-
-**Usage:**
-
-> Get confirmed vulnerabilities from scan ID 12345
+### 3. Retrieve Confirmed Findings
 
 ```bash
-python3 skills/xbow-integration/scripts/xbow_client.py findings 12345
+python3 skills/xbow-integration/scripts/xbow_client.py findings <scan_id>
 ```
 
-_Outputs JSON containing OWASP mapping, CVSS scores, remediation advice, and the exact proof-of-concept exploit used by the AI._
-
----
+Returns structured JSON with OWASP mapping, CVSS, CWE, evidence, and remediation.
 
 ### 4. Generate Evidence Report
 
-Generate a standardized Markdown report containing all verified findings from the XBOW engagement.
-
-**Usage:**
-
-> Generate a Markdown report for scan ID 12345
-
 ```bash
-python3 skills/xbow-integration/scripts/xbow_client.py report 12345 --output xbow_report.md
+python3 skills/xbow-integration/scripts/xbow_client.py report <scan_id> --output pentest_report.md
 ```
 
 ---
 
 ## Agent Usage Examples
 
-The OpenClaw Red Team Agent can invoke the `xbow_scan` native tool without touching the CLI:
+```
+Launch an autonomous swarm scan against https://api.target.com and report confirmed findings.
+Run XBOW-equivalent scan on https://staging.app.com with cookie auth and show any SQLi or SSRF.
+Check status of scan abc123 and generate the final Markdown report.
+```
 
-```
-Launch an XBOW assessment against api.staging.target.com and monitor it until completion.
-Run XBOW against target.com using this session cookie, then show me any confirmed IDORs.
-Check the status of our running XBOW scan and generate the final report if it's done.
-```
+---
+
+## What Gets Scanned (Swarm Agents)
+
+- **nuclei** — 9000+ CVE + OWASP templates (SQLi, XSS, SSRF, LFI, RCE, auth bypass, exposures)
+- **sqlmap** — Autonomous SQL injection discovery and confirmation
+- **dalfox** — XSS discovery and PoC confirmation
+- **ssrf-probe** — Cloud metadata SSRF (AWS IMDS, GCP metadata)
+- **ffuf** — Endpoint enumeration and discovery
+- **httpx** — Tech fingerprinting and surface mapping
+
+> All scans stored in `~/.openclaw/xbow-scans/` with full JSON state.
