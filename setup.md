@@ -23,13 +23,16 @@
 
 ## 1. Prerequisites
 
-| Requirement  | Version    | Install                                 |
-| ------------ | ---------- | --------------------------------------- |
-| **Node.js**  | >= 22.12.0 | `brew upgrade node` or `nvm install 22` |
-| **pnpm**     | >= 9.0     | `npm install -g pnpm`                   |
-| **Homebrew** | Latest     | [brew.sh](https://brew.sh)              |
-| **Python 3** | >= 3.10    | `brew install python3`                  |
-| **Git**      | Any        | `brew install git`                      |
+| Requirement  | Version    | Install                                             |
+| ------------ | ---------- | --------------------------------------------------- |
+| **Node.js**  | >= 22.12.0 | `brew upgrade node` or `nvm install 22`             |
+| **pnpm**     | >= 9.0     | `npm install -g pnpm`                               |
+| **Homebrew** | Latest     | [brew.sh](https://brew.sh)                          |
+| **Python 3** | >= 3.10    | `brew install python3`                              |
+| **Go**       | >= 1.21    | `brew install go` or [go.dev/dl](https://go.dev/dl) |
+| **Git**      | Any        | `brew install git`                                  |
+
+> **Why Go?** Many offensive security tools are written in Go: `nuclei`, `ffuf`, `amass`, `subfinder`, `httpx`, `dnsx`, `kerbrute`. The setup script installs Go automatically and uses `go install` to fetch them.
 
 ### Verify Prerequisites
 
@@ -37,6 +40,7 @@
 node -v       # Must be >= v22.12.0
 pnpm -v       # Any recent version
 python3 --version  # >= 3.10
+go version    # >= go1.21
 brew --version
 ```
 

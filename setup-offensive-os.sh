@@ -75,9 +75,71 @@ install_pip() {
 }
 
 # ─────────────────────────────────────────────────────────────
-# 1. Node.js Version Check
+# 1. Go Installation (required for many security tools)
 # ─────────────────────────────────────────────────────────────
-header "[1/7] Checking Node.js version..."
+header "[1/8] Checking / Installing Go (required for nuclei, ffuf, amass, subfinder, httpx, kerbrute)..."
+
+install_go() {
+  local GO_VERSION="1.22.3"
+  local OS_LOWER
+  local ARCH
+  OS_LOWER="$(uname -s | tr '[:upper:]' '[:lower:]')"
+  ARCH="$(uname -m)"
+  if [[ "$ARCH" == "arm64" || "$ARCH" == "aarch64" ]]; then
+    ARCH="arm64"
+  else
+    ARCH="amd64"
+  fi
+  local TARBALL="go${GO_VERSION}.${OS_LOWER}-${ARCH}.tar.gz"
+  local URL="https://go.dev/dl/${TARBALL}"
+  warn "Downloading Go ${GO_VERSION} from ${URL}..."
+  curl -fsSL "$URL" -o "/tmp/${TARBALL}" && \
+    sudo rm -rf /usr/local/go && \
+    sudo tar -C /usr/local -xzf "/tmp/${TARBALL}" && \
+    rm -f "/tmp/${TARBALL}"
+  export PATH="$PATH:/usr/local/go/bin"
+  ok "Go ${GO_VERSION} installed at /usr/local/go"
+}
+
+if ! command -v go >/dev/null 2>&1; then
+  if [[ "$PKG_MGR" == "brew" ]]; then
+    warn "Go not found — installing via Homebrew..."
+    brew install go
+  else
+    install_go
+  fi
+else
+  ok "Go $(go version | awk '{print $3}') already installed"
+fi
+
+# Ensure GOPATH/bin is in PATH for this session and future shells
+export GOPATH="${GOPATH:-$HOME/go}"
+export PATH="$PATH:$GOPATH/bin:/usr/local/go/bin"
+
+# Persist GOPATH/bin to shell profile if not already present
+SHELL_PROFILE="$HOME/.zshrc"
+[[ -f "$HOME/.bash_profile" ]] && SHELL_PROFILE="$HOME/.bash_profile"
+if ! grep -q 'GOPATH/bin' "$SHELL_PROFILE" 2>/dev/null; then
+  echo '' >> "$SHELL_PROFILE"
+  echo '# Go binaries' >> "$SHELL_PROFILE"
+  echo 'export GOPATH="$HOME/go"' >> "$SHELL_PROFILE"
+  echo 'export PATH="$PATH:$GOPATH/bin:/usr/local/go/bin"' >> "$SHELL_PROFILE"
+  ok "Added GOPATH/bin to $SHELL_PROFILE"
+fi
+
+# Helper: install a Go binary tool via go install
+install_go_binary() {
+  local name=$1
+  local pkg=$2
+  if command -v "$name" >/dev/null 2>&1; then
+    ok "$name already installed"
+  else
+    warn "Installing $name via go install..."
+    go install "$pkg" 2>/dev/null && ok "$name installed" || warn "Failed to install $name — install manually: go install $pkg"
+  fi
+}
+
+header "[2/8] Checking Node.js version..."
 if ! command -v node >/dev/null 2>&1; then
   warn "Node.js not found. Installing..."
   if [[ "$PKG_MGR" == "brew" ]]; then
@@ -98,35 +160,37 @@ fi
 ok "Node.js $CURRENT_NODE meets requirement (>= $REQUIRED_NODE)"
 
 # ─────────────────────────────────────────────────────────────
-# 2. Phase 1 Tools — Web/API Offensive
+# 3. Phase 1 Tools — Web/API Offensive
 # ─────────────────────────────────────────────────────────────
-header "[2/7] Installing Phase 1 tools (Web/API Offensive)..."
-if [[ "$PKG_MGR" == "brew" ]]; then
-  PHASE1_TOOLS=("nuclei" "sqlmap" "ffuf" "semgrep" "amass" "subfinder" "httpx" "feroxbuster")
-  for tool in "${PHASE1_TOOLS[@]}"; do install_pkg "$tool"; done
-elif [[ "$PKG_MGR" == "apt" ]]; then
-  # On Linux, these tools are often best installed via Go or direct binary downloads.
-  # Installing the ones available in APT, or warning to use Go for specialized tools.
-  warn "On Linux, tools like nuclei/subfinder are best installed via 'go install'. Attempting APT fallbacks."
-  sudo apt-get install -y sqlmap ffuf
-  install_pkg "golang"
-fi
+header "[3/8] Installing Phase 1 tools (Web/API Offensive)..."
 
+# Go-based tools — install via go install on ALL platforms
+install_go_binary "nuclei"      "github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest"
+install_go_binary "ffuf"        "github.com/ffuf/ffuf/v2@latest"
+install_go_binary "amass"       "github.com/owasp-amass/amass/v4/...@master"
+install_go_binary "subfinder"   "github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
+install_go_binary "httpx"       "github.com/projectdiscovery/httpx/cmd/httpx@latest"
+install_go_binary "feroxbuster" "github.com/epi052/feroxbuster@latest" 2>/dev/null || \
+  install_pkg "feroxbuster"  # feroxbuster is Rust-based — brew fallback
+
+# Non-Go tools via package manager
+install_pkg "sqlmap"
+install_pkg "semgrep"
 install_pip "jwt_tool"
 
 # ─────────────────────────────────────────────────────────────
-# 3. Phase 2 Tools — Cloud Offensive
+# 4. Phase 2 Tools — Cloud Offensive
 # ─────────────────────────────────────────────────────────────
-header "[3/7] Installing Phase 2 tools (Cloud Offensive)..."
+header "[4/8] Installing Phase 2 tools (Cloud Offensive)..."
 install_pkg "awscli"
 install_pip "trufflehog"
 install_pip "scoutsuite"
 install_pip "pacu"
 
 # ─────────────────────────────────────────────────────────────
-# 4. Phase 3 Tools — Active Directory Offensive
+# 5. Phase 3 Tools — Active Directory Offensive
 # ─────────────────────────────────────────────────────────────
-header "[4/7] Installing Phase 3 tools (Active Directory Offensive)..."
+header "[5/8] Installing Phase 3 tools (Active Directory Offensive)..."
 install_pip "impacket"
 install_pip "bloodhound"
 
@@ -134,30 +198,31 @@ if ! command -v crackmapexec >/dev/null 2>&1 && ! command -v cme >/dev/null 2>&1
   install_pip "crackmapexec"
 fi
 
-if ! command -v kerbrute >/dev/null 2>&1; then
-  warn "Kerbrute not found — download manually from GitHub releases"
-fi
+# Kerbrute — Go binary, auto-installed
+install_go_binary "kerbrute" "github.com/ropnop/kerbrute@latest"
 
 # ─────────────────────────────────────────────────────────────
-# 5. Phase 4 Tools — Network Offensive
+# 6. Phase 4 Tools — Network Offensive
 # ─────────────────────────────────────────────────────────────
-header "[5/7] Installing Phase 4 tools (Network Offensive)..."
-NETWORK_TOOLS=("nmap" "masscan" "bettercap" "hydra")
+header "[6/8] Installing Phase 4 tools (Network Offensive)..."
+NETWORK_TOOLS=("nmap" "masscan" "bettercap" "hydra" "dnsx")
 for tool in "${NETWORK_TOOLS[@]}"; do install_pkg "$tool"; done
+# dnsx is also available as a Go binary fallback
+command -v dnsx >/dev/null 2>&1 || install_go_binary "dnsx" "github.com/projectdiscovery/dnsx/cmd/dnsx@latest"
 
 # ─────────────────────────────────────────────────────────────
-# 6. Global Dependences
+# 7. Global Dependencies
 # ─────────────────────────────────────────────────────────────
-header "[6/7] Installing Global Dependencies..."
+header "[7/8] Installing Global Dependencies..."
 if ! command -v pnpm >/dev/null 2>&1; then
   warn "pnpm not found. Installing..."
   npm install -g pnpm || { err "pnpm installation failed."; exit 1; }
 fi
 
 # ─────────────────────────────────────────────────────────────
-# 7. Project Build & Config
+# 8. Project Build & Config
 # ─────────────────────────────────────────────────────────────
-header "[7/7] Initializing OpenClaw project..."
+header "[8/8] Initializing OpenClaw project..."
 
 ok "Running pnpm install..."
 pnpm install
