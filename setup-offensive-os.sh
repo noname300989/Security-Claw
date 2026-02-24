@@ -225,42 +225,81 @@ header "[7/8] Installing Global / Utility Dependencies..."
 
 # ripgrep (rg) — fast text search used by OpenClaw code tools
 if ! command -v rg >/dev/null 2>&1; then
-  if [[ "$PKG_MGR" == "brew" ]]; then
-    brew install ripgrep
-  else
-    $INSTALL_CMD ripgrep 2>/dev/null || warn "ripgrep install failed — install manually: apt install ripgrep"
-  fi
-else
-  ok "rg (ripgrep) already installed"
-fi
+  if [[ "$PKG_MGR" == "brew" ]]; then brew install ripgrep
+  else $INSTALL_CMD ripgrep 2>/dev/null || warn "ripgrep: apt install ripgrep"; fi
+else ok "rg (ripgrep) already installed"; fi
+
+# whatweb — web fingerprinting / tech stack detection
+if ! command -v whatweb >/dev/null 2>&1; then
+  if [[ "$PKG_MGR" == "brew" ]]; then brew install whatweb
+  else $INSTALL_CMD whatweb 2>/dev/null || warn "whatweb: apt install whatweb"; fi
+else ok "whatweb already installed"; fi
+
+# mitmproxy — interactive HTTPS proxy / MITM tool
+if ! command -v mitmproxy >/dev/null 2>&1; then
+  if [[ "$PKG_MGR" == "brew" ]]; then brew install mitmproxy
+  else pip3 install mitmproxy --break-system-packages 2>/dev/null || pip3 install mitmproxy || warn "mitmproxy install failed"; fi
+else ok "mitmproxy already installed"; fi
+
+# gobuster — directory/file/DNS busting tool (Go binary)
+if ! command -v gobuster >/dev/null 2>&1; then
+  if [[ "$PKG_MGR" == "brew" ]]; then brew install gobuster
+  else install_go_binary "gobuster" "github.com/OJ/gobuster/v3@latest"; fi
+else ok "gobuster already installed"; fi
 
 # signal-cli — Signal messaging channel for OpenClaw
 if ! command -v signal-cli >/dev/null 2>&1; then
-  if [[ "$PKG_MGR" == "brew" ]]; then
-    brew install signal-cli
-  else
-    warn "signal-cli: on Linux install via: https://github.com/AsamK/signal-cli/releases"
-  fi
-else
-  ok "signal-cli already installed"
-fi
+  if [[ "$PKG_MGR" == "brew" ]]; then brew install signal-cli
+  else warn "signal-cli: on Linux install via: https://github.com/AsamK/signal-cli/releases"; fi
+else ok "signal-cli already installed"; fi
 
 # xurl — X/Twitter URL resolver CLI
 if ! command -v xurl >/dev/null 2>&1; then
   if [[ "$PKG_MGR" == "brew" ]]; then
-    brew install --cask xurl 2>/dev/null || brew install xurl 2>/dev/null || warn "xurl install failed — install manually from https://github.com/xdevplatform/xurl"
-  else
-    warn "xurl: download from https://github.com/xdevplatform/xurl/releases"
-  fi
-else
-  ok "xurl already installed"
-fi
+    brew install --cask xurl 2>/dev/null || brew install xurl 2>/dev/null || warn "xurl: https://github.com/xdevplatform/xurl"
+  else warn "xurl: download from https://github.com/xdevplatform/xurl/releases"; fi
+else ok "xurl already installed"; fi
+
+# jwt_tool — JWT security testing CLI
+if ! command -v jwt_tool >/dev/null 2>&1; then
+  warn "Installing jwt_tool (pip)..."
+  pip3 install jwt-tool --break-system-packages 2>/dev/null || pip3 install jwt-tool 2>/dev/null || warn "jwt_tool: pip3 install jwt-tool"
+else ok "jwt_tool already installed"; fi
+
+# gifgrep — GIF search/browse TUI (steipete tap)
+if ! command -v gifgrep >/dev/null 2>&1; then
+  if [[ "$PKG_MGR" == "brew" ]]; then
+    brew tap steipete/tap 2>/dev/null && brew install steipete/tap/gifgrep || \
+      install_go_binary "gifgrep" "github.com/steipete/gifgrep@latest"
+  else install_go_binary "gifgrep" "github.com/steipete/gifgrep@latest"; fi
+else ok "gifgrep already installed"; fi
+
+# goplaces — Google Places API CLI (steipete tap)
+if ! command -v goplaces >/dev/null 2>&1; then
+  if [[ "$PKG_MGR" == "brew" ]]; then
+    brew tap steipete/tap 2>/dev/null && brew install steipete/tap/goplaces || \
+      warn "goplaces: brew install steipete/tap/goplaces"
+  else warn "goplaces: brew install steipete/tap/goplaces (macOS) or https://github.com/steipete/goplaces"; fi
+else ok "goplaces already installed"; fi
+
+# lobster — OpenClaw plugin binary (npm package)
+if ! command -v lobster >/dev/null 2>&1; then
+  warn "Installing lobster (npm global)..."
+  npm install -g lobster 2>/dev/null && ok "lobster installed" || warn "lobster: npm install -g lobster"
+else ok "lobster already installed"; fi
+
+# clawhub — OpenClaw skills marketplace CLI (npm/npx)
+if ! command -v clawhub >/dev/null 2>&1; then
+  warn "Installing clawhub (npm global)..."
+  npm install -g clawhub 2>/dev/null && ok "clawhub installed" || warn "clawhub: use npx clawhub or npm install -g clawhub"
+else ok "clawhub already installed"; fi
 
 # pnpm
 if ! command -v pnpm >/dev/null 2>&1; then
   warn "pnpm not found. Installing..."
   npm install -g pnpm || { err "pnpm installation failed."; exit 1; }
 fi
+
 
 # ─────────────────────────────────────────────────────────────
 # 8. Project Build & Config
