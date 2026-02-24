@@ -150,7 +150,7 @@ if ! command -v node >/dev/null 2>&1; then
   fi
 fi
 
-REQUIRED_NODE="22.12.0"
+REQUIRED_NODE="22.22.0"
 CURRENT_NODE=$(node -v 2>/dev/null | cut -d'v' -f2 || echo "0.0.0")
 
 if [[ "$(printf '%s\n' "$REQUIRED_NODE" "$CURRENT_NODE" | sort -V | head -n1)" != "$REQUIRED_NODE" ]]; then
