@@ -176,7 +176,15 @@ install_go_binary "feroxbuster" "github.com/epi052/feroxbuster@latest" 2>/dev/nu
 # Non-Go tools via package manager
 install_pkg "sqlmap"
 install_pkg "semgrep"
-install_pip "jwt_tool"
+install_pkg "whatweb"  # Web fingerprinting (Ruby-based, available in brew/apt)
+
+# jwt_tool — JWT security testing CLI
+if ! command -v jwt_tool >/dev/null 2>&1; then
+  warn "Installing jwt_tool (pip)..."
+  pip3 install jwt-tool --break-system-packages 2>/dev/null || pip3 install jwt-tool 2>/dev/null && ok "jwt_tool installed" || warn "jwt_tool install failed — run: pip3 install jwt-tool"
+else
+  ok "jwt_tool already installed"
+fi
 
 # ─────────────────────────────────────────────────────────────
 # 4. Phase 2 Tools — Cloud Offensive
@@ -211,9 +219,44 @@ for tool in "${NETWORK_TOOLS[@]}"; do install_pkg "$tool"; done
 command -v dnsx >/dev/null 2>&1 || install_go_binary "dnsx" "github.com/projectdiscovery/dnsx/cmd/dnsx@latest"
 
 # ─────────────────────────────────────────────────────────────
-# 7. Global Dependencies
+# 7. Global / Utility Dependencies
 # ─────────────────────────────────────────────────────────────
-header "[7/8] Installing Global Dependencies..."
+header "[7/8] Installing Global / Utility Dependencies..."
+
+# ripgrep (rg) — fast text search used by OpenClaw code tools
+if ! command -v rg >/dev/null 2>&1; then
+  if [[ "$PKG_MGR" == "brew" ]]; then
+    brew install ripgrep
+  else
+    $INSTALL_CMD ripgrep 2>/dev/null || warn "ripgrep install failed — install manually: apt install ripgrep"
+  fi
+else
+  ok "rg (ripgrep) already installed"
+fi
+
+# signal-cli — Signal messaging channel for OpenClaw
+if ! command -v signal-cli >/dev/null 2>&1; then
+  if [[ "$PKG_MGR" == "brew" ]]; then
+    brew install signal-cli
+  else
+    warn "signal-cli: on Linux install via: https://github.com/AsamK/signal-cli/releases"
+  fi
+else
+  ok "signal-cli already installed"
+fi
+
+# xurl — X/Twitter URL resolver CLI
+if ! command -v xurl >/dev/null 2>&1; then
+  if [[ "$PKG_MGR" == "brew" ]]; then
+    brew install --cask xurl 2>/dev/null || brew install xurl 2>/dev/null || warn "xurl install failed — install manually from https://github.com/xdevplatform/xurl"
+  else
+    warn "xurl: download from https://github.com/xdevplatform/xurl/releases"
+  fi
+else
+  ok "xurl already installed"
+fi
+
+# pnpm
 if ! command -v pnpm >/dev/null 2>&1; then
   warn "pnpm not found. Installing..."
   npm install -g pnpm || { err "pnpm installation failed."; exit 1; }
@@ -264,7 +307,13 @@ echo ""
 echo "  Next steps:"
 echo "  1. Copy openclaw.json.template to ~/.openclaw/openclaw.json"
 echo "  2. Add your LLM API key to .env (see .env.example)"
-echo "  3. Activate the Red Team Agent:"
+echo "  3. (Signal channel) Register signal-cli with your phone number:"
+echo "     signal-cli -a +<YOUR_PHONE_NUMBER> register"
+echo "     signal-cli -a +<YOUR_PHONE_NUMBER> verify <CODE>"
+echo "     Then set channels.signal.phoneNumber in openclaw.json"
+echo "  4. (Slack channel) Add your Slack Bot + App token in openclaw.json:"
+echo "     channels.slack.botToken and channels.slack.appToken"
+echo "  5. Activate the Red Team Agent:"
 echo "     pnpm openclaw agent --activation red-team"
 echo ""
 warn "Security reminder: Only test systems you are authorized to test."
